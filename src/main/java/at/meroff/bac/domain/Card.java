@@ -399,4 +399,60 @@ public class Card implements Serializable {
     public static Vec2d getVector(Card source, Card target) {
         return new Vec2d(target.getCenter().x - source.getCenter().x, target.getCenter().y - source.getCenter().y);
     }
+
+    /**
+     * Method returns the smallest x coordinate for the rectangle
+     * @return smallest x coordinate
+     */
+    int getSmallestX() {
+        int ret = Integer.MAX_VALUE;
+        if (x1 < ret) ret = x1.intValue();
+        if (x2 < ret) ret = x2.intValue();
+        if (x3 < ret) ret = x3.intValue();
+        if (x4 < ret) ret = x4.intValue();
+
+        return ret;
+    }
+
+    /**
+     * Method returns the smallest y coordinate for the rectangle
+     * @return smallest y coordinate
+     */
+    int getSmallestY() {
+        int ret = Integer.MAX_VALUE;
+        if (y1 < ret) ret = y1.intValue();
+        if (y2 < ret) ret = y2.intValue();
+        if (y3 < ret) ret = y3.intValue();
+        if (y4 < ret) ret = y4.intValue();
+
+        return ret;
+    }
+
+    /**
+     * Method returns the biggest x coordinate for the rectangle
+     * @return biggest x coordinate
+     */
+    int getBiggestX() {
+        int ret = Integer.MIN_VALUE;
+        if (x1 > ret) ret = x1.intValue();
+        if (x2 > ret) ret = x2.intValue();
+        if (x3 > ret) ret = x3.intValue();
+        if (x4 > ret) ret = x4.intValue();
+
+        return ret;
+    }
+
+    /**
+     * Method returns the biggest y coordinate for the rectangle
+     * @return biggest y coordinate
+     */
+    int getBiggestY() {
+        int ret = Integer.MIN_VALUE;
+        if (y1 > ret) ret = y1.intValue();
+        if (y2 > ret) ret = y2.intValue();
+        if (y3 > ret) ret = y3.intValue();
+        if (y4 > ret) ret = y4.intValue();
+
+        return ret;
+    }
 }

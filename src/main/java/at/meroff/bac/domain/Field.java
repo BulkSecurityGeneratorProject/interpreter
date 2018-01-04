@@ -3,19 +3,34 @@ package at.meroff.bac.domain;
 import at.meroff.bac.domain.enumeration.CardType;
 import at.meroff.bac.helper.Calculation;
 import at.meroff.bac.helper.Statistics;
-import javafx.concurrent.Task;
+
 import javafx.util.Pair;
+import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.apache.xml.security.utils.XMLUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import java.awt.geom.Line2D;
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import at.meroff.bac.domain.enumeration.LayoutType;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * A Field.
@@ -279,6 +294,129 @@ public class Field implements Serializable {
             checkInReverseOrder();
         }
 
+        // create image
+
+        DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
+        String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
+        Document doc = impl.createDocument(svgNS, "svg", null);
+
+        // get the root element (the svg element)
+        Element svgRoot = doc.getDocumentElement();
+
+// set the width and height attribute on the root svg element
+        svgRoot.setAttributeNS(null, "width", "4000");
+        svgRoot.setAttributeNS(null, "height", "4500");
+
+// create the rectangle
+
+
+        cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT))
+            .forEach(card -> {
+                Element rectangle = doc.createElementNS(svgNS, "rect");
+
+                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()/2));
+                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()/2-card.getSmallestX()/2));
+                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()/2-card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "style", "fill:blue");
+                svgRoot.appendChild(rectangle);
+
+                Element text = doc.createElementNS(svgNS,"text");
+                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX())/2)));
+                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY())/2)));
+                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: 44px;");
+                text.setTextContent(card.getCardId().toString());
+                svgRoot.appendChild(text);
+
+            });
+
+        cards.stream().filter(card -> card.getCardType().equals(CardType.TASK))
+            .forEach(card -> {
+                Element rectangle = doc.createElementNS(svgNS, "rect");
+
+                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()/2));
+                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()/2-card.getSmallestX()/2));
+                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()/2-card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "style", "fill:red");
+                svgRoot.appendChild(rectangle);
+
+                Element text = doc.createElementNS(svgNS,"text");
+                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX())/2)));
+                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY())/2)));
+                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: 44px;");
+                text.setTextContent(card.getCardId().toString());
+                svgRoot.appendChild(text);
+            });
+
+        cards.stream().filter(card -> card.getCardType().equals(CardType.TRANSFER))
+            .forEach(card -> {
+                Element rectangle = doc.createElementNS(svgNS, "rect");
+
+                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()/2));
+                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()/2-card.getSmallestX()/2));
+                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()/2-card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "style", "fill:yellow");
+                svgRoot.appendChild(rectangle);
+
+                Element text = doc.createElementNS(svgNS,"text");
+                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX())/2)));
+                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY())/2)));
+                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: 44px;");
+                text.setTextContent(card.getCardId().toString());
+                svgRoot.appendChild(text);
+            });
+
+        cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT))
+            .forEach(card -> {
+                // <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+                for (Card card1 : card.getTasks()) {
+                    if (card.getTasks().indexOf(card1) == 0) {
+                        Element line = doc.createElementNS(svgNS, "line");
+                        line.setAttributeNS(null, "x1", Integer.toString((int) card.getCenter().getX()/2));
+                        line.setAttributeNS(null, "x2", Integer.toString((int) card1.getCenter().getX()/2));
+                        line.setAttributeNS(null, "y1", Integer.toString((int) card.getCenter().getY()/2));
+                        line.setAttributeNS(null, "y2", Integer.toString((int) card1.getCenter().getY()/2));
+                        line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
+                        svgRoot.appendChild(line);
+                    } else {
+                        Card cardPrev = card.getTasks().get(card.getTasks().indexOf(card1) - 1);
+                        Element line = doc.createElementNS(svgNS, "line");
+                        line.setAttributeNS(null, "x1", Integer.toString((int) card1.getCenter().getX()/2));
+                        line.setAttributeNS(null, "x2", Integer.toString((int) cardPrev.getCenter().getX()/2));
+                        line.setAttributeNS(null, "y1", Integer.toString((int) card1.getCenter().getY()/2));
+                        line.setAttributeNS(null, "y2", Integer.toString((int) cardPrev.getCenter().getY()/2));
+                        line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
+                        svgRoot.appendChild(line);
+                    }
+                }
+
+
+            });
+
+
+// attach the rectangle to the svg root element
+
+
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try {
+            transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
+        //System.out.println("XML IN String format is: \n" + writer.toString());
+        //System.out.println(Arrays.toString(Base64.getEncoder().encode(writer.toString().getBytes())));
+
+        setSvgImage(writer.toString().getBytes());
     }
 
 
