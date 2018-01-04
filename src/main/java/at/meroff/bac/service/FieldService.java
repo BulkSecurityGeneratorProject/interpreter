@@ -3,6 +3,7 @@ package at.meroff.bac.service;
 import at.meroff.bac.domain.Card;
 import at.meroff.bac.domain.Field;
 import at.meroff.bac.domain.enumeration.CardType;
+import at.meroff.bac.domain.enumeration.LayoutType;
 import at.meroff.bac.repository.CardRepository;
 import at.meroff.bac.repository.FieldRepository;
 import at.meroff.bac.service.dto.CardDTO;
@@ -100,11 +101,9 @@ public class FieldService {
                     }
                 }
 
-                log.error("!!!!!!!!!!!!!!!!!!!! " + field.calculateRelations());
+                field.findRelations();
 
-                for (Card card : field.getCards()) {
-                    cardRepository.save(card);
-                }
+                cardRepository.save(field.getCards());
 
             } catch (ParserConfigurationException | IOException | SAXException e) {
                 e.printStackTrace();

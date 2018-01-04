@@ -22,6 +22,11 @@
             "fieldName": "svgImage",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "layoutType",
+            "fieldType": "LayoutType",
+            "fieldValues": "DEFAULT,STAR"
         }
     ],
     "changelogDate": "20180104123831",

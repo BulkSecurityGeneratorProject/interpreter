@@ -20,6 +20,7 @@
             <th><span>Description</span></th>
             <th><span>Orig Image</span></th>
             <th><span>Svg Image</span></th>
+            <th><span>Layout Type</span></th>
             <th></th>
             </tr>
             </thead>
@@ -37,6 +38,7 @@
                     <a *ngIf="field.svgImage" (click)="openFile(field.svgImageContentType, field.svgImage)">open</a>
                     <span *ngIf="field.svgImage">{{field.svgImageContentType}}, {{byteSize(field.svgImage)}}</span>
                 </td>
+                <td>{{field.layoutType}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

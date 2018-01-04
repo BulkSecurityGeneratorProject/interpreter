@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
+import at.meroff.bac.domain.enumeration.LayoutType;
 
 /**
  * A DTO for the Field entity.
@@ -23,6 +24,8 @@ public class FieldDTO implements Serializable {
     @Lob
     private byte[] svgImage;
     private String svgImageContentType;
+
+    private LayoutType layoutType;
 
     private Set<CardDTO> cards;
 
@@ -74,6 +77,14 @@ public class FieldDTO implements Serializable {
         this.svgImageContentType = svgImageContentType;
     }
 
+    public LayoutType getLayoutType() {
+        return layoutType;
+    }
+
+    public void setLayoutType(LayoutType layoutType) {
+        this.layoutType = layoutType;
+    }
+
     public Set<CardDTO> getCards() {
         return cards;
     }
@@ -110,6 +121,7 @@ public class FieldDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", origImage='" + getOrigImage() + "'" +
             ", svgImage='" + getSvgImage() + "'" +
+            ", layoutType='" + getLayoutType() + "'" +
             "}";
     }
 }

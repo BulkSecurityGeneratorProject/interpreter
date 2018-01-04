@@ -20,6 +20,7 @@ import at.meroff.bac.service.dto.FieldCriteria;
 
 import at.meroff.bac.service.dto.FieldDTO;
 import at.meroff.bac.service.mapper.FieldMapper;
+import at.meroff.bac.domain.enumeration.LayoutType;
 
 /**
  * Service for executing complex queries for Field entities in the database.
@@ -80,6 +81,9 @@ public class FieldQueryService extends QueryService<Field> {
             }
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), Field_.description));
+            }
+            if (criteria.getLayoutType() != null) {
+                specification = specification.and(buildSpecification(criteria.getLayoutType(), Field_.layoutType));
             }
             if (criteria.getCardId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCardId(), Field_.cards, Card_.id));

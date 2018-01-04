@@ -1,5 +1,10 @@
 import { BaseEntity } from './../../shared';
 
+export const enum LayoutType {
+    'DEFAULT',
+    'STAR'
+}
+
 export class Field implements BaseEntity {
     constructor(
         public id?: number,
@@ -8,6 +13,7 @@ export class Field implements BaseEntity {
         public origImage?: any,
         public svgImageContentType?: string,
         public svgImage?: any,
+        public layoutType?: LayoutType,
         public cards?: BaseEntity[],
     ) {
     }

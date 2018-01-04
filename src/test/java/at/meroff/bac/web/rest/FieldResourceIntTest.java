@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import at.meroff.bac.domain.enumeration.LayoutType;
 /**
  * Test class for the FieldResource REST controller.
  *
@@ -57,6 +58,9 @@ public class FieldResourceIntTest {
     private static final byte[] UPDATED_SVG_IMAGE = TestUtil.createByteArray(2, "1");
     private static final String DEFAULT_SVG_IMAGE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_SVG_IMAGE_CONTENT_TYPE = "image/png";
+
+    private static final LayoutType DEFAULT_LAYOUT_TYPE = LayoutType.DEFAULT;
+    private static final LayoutType UPDATED_LAYOUT_TYPE = LayoutType.STAR;
 
     @Autowired
     private FieldRepository fieldRepository;
@@ -109,7 +113,8 @@ public class FieldResourceIntTest {
             .origImage(DEFAULT_ORIG_IMAGE)
             .origImageContentType(DEFAULT_ORIG_IMAGE_CONTENT_TYPE)
             .svgImage(DEFAULT_SVG_IMAGE)
-            .svgImageContentType(DEFAULT_SVG_IMAGE_CONTENT_TYPE);
+            .svgImageContentType(DEFAULT_SVG_IMAGE_CONTENT_TYPE)
+            .layoutType(DEFAULT_LAYOUT_TYPE);
         return field;
     }
 
@@ -139,6 +144,7 @@ public class FieldResourceIntTest {
         assertThat(testField.getOrigImageContentType()).isEqualTo(DEFAULT_ORIG_IMAGE_CONTENT_TYPE);
         assertThat(testField.getSvgImage()).isEqualTo(DEFAULT_SVG_IMAGE);
         assertThat(testField.getSvgImageContentType()).isEqualTo(DEFAULT_SVG_IMAGE_CONTENT_TYPE);
+        assertThat(testField.getLayoutType()).isEqualTo(DEFAULT_LAYOUT_TYPE);
     }
 
     @Test
@@ -176,7 +182,8 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.[*].origImageContentType").value(hasItem(DEFAULT_ORIG_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].origImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_ORIG_IMAGE))))
             .andExpect(jsonPath("$.[*].svgImageContentType").value(hasItem(DEFAULT_SVG_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].svgImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE))));
+            .andExpect(jsonPath("$.[*].svgImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE))))
+            .andExpect(jsonPath("$.[*].layoutType").value(hasItem(DEFAULT_LAYOUT_TYPE.toString())));
     }
 
     @Test
@@ -194,7 +201,8 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.origImageContentType").value(DEFAULT_ORIG_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.origImage").value(Base64Utils.encodeToString(DEFAULT_ORIG_IMAGE)))
             .andExpect(jsonPath("$.svgImageContentType").value(DEFAULT_SVG_IMAGE_CONTENT_TYPE))
-            .andExpect(jsonPath("$.svgImage").value(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE)));
+            .andExpect(jsonPath("$.svgImage").value(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE)))
+            .andExpect(jsonPath("$.layoutType").value(DEFAULT_LAYOUT_TYPE.toString()));
     }
 
     @Test
@@ -238,6 +246,45 @@ public class FieldResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllFieldsByLayoutTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        fieldRepository.saveAndFlush(field);
+
+        // Get all the fieldList where layoutType equals to DEFAULT_LAYOUT_TYPE
+        defaultFieldShouldBeFound("layoutType.equals=" + DEFAULT_LAYOUT_TYPE);
+
+        // Get all the fieldList where layoutType equals to UPDATED_LAYOUT_TYPE
+        defaultFieldShouldNotBeFound("layoutType.equals=" + UPDATED_LAYOUT_TYPE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFieldsByLayoutTypeIsInShouldWork() throws Exception {
+        // Initialize the database
+        fieldRepository.saveAndFlush(field);
+
+        // Get all the fieldList where layoutType in DEFAULT_LAYOUT_TYPE or UPDATED_LAYOUT_TYPE
+        defaultFieldShouldBeFound("layoutType.in=" + DEFAULT_LAYOUT_TYPE + "," + UPDATED_LAYOUT_TYPE);
+
+        // Get all the fieldList where layoutType equals to UPDATED_LAYOUT_TYPE
+        defaultFieldShouldNotBeFound("layoutType.in=" + UPDATED_LAYOUT_TYPE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFieldsByLayoutTypeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        fieldRepository.saveAndFlush(field);
+
+        // Get all the fieldList where layoutType is not null
+        defaultFieldShouldBeFound("layoutType.specified=true");
+
+        // Get all the fieldList where layoutType is null
+        defaultFieldShouldNotBeFound("layoutType.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllFieldsByCardIsEqualToSomething() throws Exception {
         // Initialize the database
         Card card = CardResourceIntTest.createEntity(em);
@@ -266,7 +313,8 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.[*].origImageContentType").value(hasItem(DEFAULT_ORIG_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].origImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_ORIG_IMAGE))))
             .andExpect(jsonPath("$.[*].svgImageContentType").value(hasItem(DEFAULT_SVG_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].svgImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE))));
+            .andExpect(jsonPath("$.[*].svgImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE))))
+            .andExpect(jsonPath("$.[*].layoutType").value(hasItem(DEFAULT_LAYOUT_TYPE.toString())));
     }
 
     /**
@@ -305,7 +353,8 @@ public class FieldResourceIntTest {
             .origImage(UPDATED_ORIG_IMAGE)
             .origImageContentType(UPDATED_ORIG_IMAGE_CONTENT_TYPE)
             .svgImage(UPDATED_SVG_IMAGE)
-            .svgImageContentType(UPDATED_SVG_IMAGE_CONTENT_TYPE);
+            .svgImageContentType(UPDATED_SVG_IMAGE_CONTENT_TYPE)
+            .layoutType(UPDATED_LAYOUT_TYPE);
         FieldDTO fieldDTO = fieldMapper.toDto(updatedField);
 
         restFieldMockMvc.perform(put("/api/fields")
@@ -322,6 +371,7 @@ public class FieldResourceIntTest {
         assertThat(testField.getOrigImageContentType()).isEqualTo(UPDATED_ORIG_IMAGE_CONTENT_TYPE);
         assertThat(testField.getSvgImage()).isEqualTo(UPDATED_SVG_IMAGE);
         assertThat(testField.getSvgImageContentType()).isEqualTo(UPDATED_SVG_IMAGE_CONTENT_TYPE);
+        assertThat(testField.getLayoutType()).isEqualTo(UPDATED_LAYOUT_TYPE);
     }
 
     @Test

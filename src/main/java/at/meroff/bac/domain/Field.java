@@ -1,6 +1,7 @@
 package at.meroff.bac.domain;
 
 import at.meroff.bac.domain.enumeration.CardType;
+import at.meroff.bac.helper.Calculation;
 import at.meroff.bac.helper.Statistics;
 import javafx.util.Pair;
 import org.hibernate.annotations.Cache;
@@ -11,6 +12,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import at.meroff.bac.domain.enumeration.LayoutType;
 
 /**
  * A Field.
@@ -43,10 +46,17 @@ public class Field implements Serializable {
     @Column(name = "svg_image_content_type")
     private String svgImageContentType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "layout_type")
+    private LayoutType layoutType;
+
     @OneToMany(mappedBy = "field")
     //@JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Card> cards = new HashSet<>();
+
+    @Transient
+    private Set<Pair<Card, Set<Pair<Card, Set<Pair<Card, Calculation>>>>>> preCalculatedValues;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -122,6 +132,19 @@ public class Field implements Serializable {
         this.svgImageContentType = svgImageContentType;
     }
 
+    public LayoutType getLayoutType() {
+        return layoutType;
+    }
+
+    public Field layoutType(LayoutType layoutType) {
+        this.layoutType = layoutType;
+        return this;
+    }
+
+    public void setLayoutType(LayoutType layoutType) {
+        this.layoutType = layoutType;
+    }
+
     public Set<Card> getCards() {
         return cards;
     }
@@ -177,13 +200,25 @@ public class Field implements Serializable {
             ", origImageContentType='" + getOrigImageContentType() + "'" +
             ", svgImage='" + getSvgImage() + "'" +
             ", svgImageContentType='" + getSvgImageContentType() + "'" +
+            ", layoutType='" + getLayoutType() + "'" +
             "}";
     }
 
-    public boolean calculateRelations() {
-        return checkForStarLayout();
+    public void findRelations() {
+        if (checkForStarLayout()) {
+            setLayoutType(LayoutType.STAR);
+        } else {
+            setLayoutType(LayoutType.DEFAULT);
+
+            // Reset task assignment
+            getCards().forEach(card -> card.setSubject(null));
+            getCards().clear();
+        }
+
+        preCalculateValues();
 
     }
+
 
     private boolean checkForStarLayout() {
         Set<Card> subjects = new HashSet<>(
@@ -243,5 +278,18 @@ public class Field implements Serializable {
         } else {
             return true;
         }
+    }
+
+    private void preCalculateValues() {
+        this.preCalculatedValues = cards.stream()
+            .filter(card -> card.getCardType().equals(CardType.SUBJECT))
+            .map(subject -> new Pair<>(subject, cards.stream()
+                .filter(card -> card.getCardType().equals(CardType.TASK))
+                .map(sourceTask -> new Pair<>(sourceTask, cards.stream()
+                    .filter(card -> card.getCardType().equals(CardType.TASK))
+                    .map(targetTask -> new Pair<>(targetTask, new Calculation(subject, sourceTask, targetTask)))
+                    .collect(Collectors.toSet()))
+                ).collect(Collectors.toSet())))
+            .collect(Collectors.toSet());
     }
 }

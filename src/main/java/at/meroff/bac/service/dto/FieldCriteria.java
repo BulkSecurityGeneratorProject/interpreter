@@ -1,6 +1,7 @@
 package at.meroff.bac.service.dto;
 
 import java.io.Serializable;
+import at.meroff.bac.domain.enumeration.LayoutType;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -23,12 +24,20 @@ import io.github.jhipster.service.filter.StringFilter;
  * fix type specific filters.
  */
 public class FieldCriteria implements Serializable {
+    /**
+     * Class for filtering LayoutType
+     */
+    public static class LayoutTypeFilter extends Filter<LayoutType> {
+    }
+
     private static final long serialVersionUID = 1L;
 
 
     private LongFilter id;
 
     private StringFilter description;
+
+    private LayoutTypeFilter layoutType;
 
     private LongFilter cardId;
 
@@ -51,6 +60,14 @@ public class FieldCriteria implements Serializable {
         this.description = description;
     }
 
+    public LayoutTypeFilter getLayoutType() {
+        return layoutType;
+    }
+
+    public void setLayoutType(LayoutTypeFilter layoutType) {
+        this.layoutType = layoutType;
+    }
+
     public LongFilter getCardId() {
         return cardId;
     }
@@ -64,6 +81,7 @@ public class FieldCriteria implements Serializable {
         return "FieldCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (description != null ? "description=" + description + ", " : "") +
+                (layoutType != null ? "layoutType=" + layoutType + ", " : "") +
                 (cardId != null ? "cardId=" + cardId + ", " : "") +
             "}";
     }

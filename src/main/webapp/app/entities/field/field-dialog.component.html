@@ -52,6 +52,13 @@
             <input type="hidden" class="form-control" name="svgImageContentType" id="field_svgImageContentType"
                 [(ngModel)]="field.svgImageContentType" />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_layoutType">Layout Type</label>
+            <select class="form-control" name="layoutType" [(ngModel)]="field.layoutType" id="field_layoutType" >
+                <option value="DEFAULT">DEFAULT</option>
+                <option value="STAR">STAR</option>
+            </select>
+        </div>
 
     </div>
     <div class="modal-footer">

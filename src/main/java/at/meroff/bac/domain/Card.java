@@ -1,6 +1,7 @@
 package at.meroff.bac.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.javafx.geom.Vec2d;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -321,7 +322,7 @@ public class Card implements Serializable {
      * @param target target card for calculation
      * @return distance between the cards
      */
-    static double getDistance(Card source, Card target) {
+    public static double getDistance(Card source, Card target) {
         return Math.sqrt(
             Math.pow(target.getCenter().x - source.getCenter().x,2) +
                 Math.pow(target.getCenter().y - source.getCenter().y,2)
@@ -336,5 +337,65 @@ public class Card implements Serializable {
         Point2D pt01 = new Point2D.Double((x1 + x3) / 2, (y1 + y3) / 2);
         Point2D pt02 = new Point2D.Double((x2 + x4) / 2, (y2 + y4) / 2);
         return new Point2D.Double((pt01.getX() + pt02.getX())/2, (pt01.getY() + pt02.getY()) / 2);
+    }
+
+    /**
+     * Calculate the max cosine similarity based on two cards. The dimension of the first card is used as a reference dimension.
+     * @param subject subject as base for calculation
+     * @param sourceTask task to determine the cosine similarity
+     * @return max cosine similarity
+     */
+    public static double getMaxCosineSimilarity(Card subject, Card sourceTask) {
+
+        double x = Card.getBiggestLength(subject) / 2;
+        double y = Card.getDistance(subject, sourceTask);
+        double alpha = Math.asin(x/y);
+        return Math.cos(alpha);
+
+    }
+
+    /**
+     * Returns the biggest side length for a given card
+     * @param card Card for Calcualation
+     * @return biggest side length
+     */
+    private static Double getBiggestLength(Card card) {
+        double length = 0;
+        double l1 = card.getPoint1().distance(card.getPoint2());
+        if (l1 > length) length = l1;
+        double l2 = card.getPoint2().distance(card.getPoint3());
+        if (l2 > length) length = l2;
+        double l3 = card.getPoint3().distance(card.getPoint4());
+        if (l3 > length) length = l3;
+        double l4 = card.getPoint4().distance(card.getPoint1());
+        if (l4 > length) length = l4;
+
+        return length;
+    }
+
+    private Point2D getPoint1() {
+        return new Point2D.Double(x1,y1);
+    }
+
+    private Point2D getPoint2() {
+        return new Point2D.Double(x2,y2);
+    }
+
+    private Point2D getPoint3() {
+        return new Point2D.Double(x3,y3);
+    }
+
+    private Point2D getPoint4() {
+        return new Point2D.Double(x4,y4);
+    }
+
+    /**
+     * Returns the vector between two cards
+     * @param source source card for calculation
+     * @param target target card for calculation
+     * @return vector between two cards
+     */
+    public static Vec2d getVector(Card source, Card target) {
+        return new Vec2d(target.getCenter().x - source.getCenter().x, target.getCenter().y - source.getCenter().y);
     }
 }
