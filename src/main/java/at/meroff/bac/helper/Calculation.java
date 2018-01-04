@@ -8,11 +8,11 @@ public class Calculation {
     /**
      * Distance between the subject and the source task
      */
-    double distanceSubjectSource;
+    public double distanceSubjectSource;
     /**
      * Distance between the subject and the target task
      */
-    double distanceSubjectTarget;
+    public double distanceSubjectTarget;
     /**
      * Distance between the source task and the target task
      */
@@ -28,10 +28,10 @@ public class Calculation {
     /**
      * cosine similarity between Subject/Source and Source/Target
      */
-    double similarityFromSource;
+    public double similarityFromSource;
 
     //TODO ev. auch die zweite Kosinus Ähnlichkeit gleich mitberücksichtigen
-    boolean isValidSimilarity;
+    public boolean isValidSimilarity;
 
     /**
      * Constructor

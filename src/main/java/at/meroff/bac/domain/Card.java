@@ -9,9 +9,7 @@ import javax.persistence.*;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 import at.meroff.bac.domain.enumeration.CardType;
 
@@ -69,10 +67,13 @@ public class Card implements Serializable {
     @OneToMany(mappedBy = "subject")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Card> tasks = new HashSet<>();
+    private List<Card> tasks = new LinkedList<>();
 
     @ManyToOne
     private Card subject;
+
+    @Transient
+    boolean proceeded = false;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -239,11 +240,11 @@ public class Card implements Serializable {
         this.field = field;
     }
 
-    public Set<Card> getTasks() {
+    public List<Card> getTasks() {
         return tasks;
     }
 
-    public Card tasks(Set<Card> cards) {
+    public Card tasks(List<Card> cards) {
         this.tasks = cards;
         return this;
     }
@@ -260,7 +261,7 @@ public class Card implements Serializable {
         return this;
     }
 
-    public void setTasks(Set<Card> cards) {
+    public void setTasks(List<Card> cards) {
         this.tasks = cards;
     }
 

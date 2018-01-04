@@ -3,12 +3,14 @@ package at.meroff.bac.domain;
 import at.meroff.bac.domain.enumeration.CardType;
 import at.meroff.bac.helper.Calculation;
 import at.meroff.bac.helper.Statistics;
+import javafx.concurrent.Task;
 import javafx.util.Pair;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
+import java.awt.geom.Line2D;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -212,13 +214,201 @@ public class Field implements Serializable {
 
             // Reset task assignment
             getCards().forEach(card -> card.setSubject(null));
-            getCards().clear();
+            getCards().forEach(card -> card.getTasks().clear());
         }
 
         preCalculateValues();
 
+        while (hasNotProceededSubjects() && hasNotProceededTasks()) {
+            Pair<Card, Card> firstSubjectTaskRelation = findFirstSubjectTaskRelation();
+
+            while (firstSubjectTaskRelation != null) {
+                // find follow-up tasks
+                Set<Pair<Card, Calculation>> followUpTasks = findFollowUpTask(firstSubjectTaskRelation);
+                followUpTasks = followUpTasks.stream()
+                    //.filter(taskCalculationPair -> savedTasks.get(savedTasks.indexOf(taskCalculationPair.getKey())).getSubject() == null)
+                    .filter(taskCalculationPair -> cards.stream().filter(card -> card.getCardType().equals(CardType.TASK)).filter(card -> Objects.isNull(card.getSubject())).count()>0)
+                    .filter(taskCalculationPair -> Objects.isNull(taskCalculationPair.getKey().getSubject()))
+                    //.filter(taskCalculationPair -> taskCalculationPair.getKey().proceeded == false)
+                    .collect(Collectors.toSet());
+
+                // filter follow-ups
+                Pair<Card, Card> finalFirstSubjectTaskRelation = firstSubjectTaskRelation;
+                Optional<Pair<Card, Calculation>> followUp = followUpTasks.stream()
+                    .filter(taskCalculationPair -> taskCalculationPair.getValue().isValidSimilarity)
+                    .filter(taskCalculationPair -> taskCalculationPair.getValue().distanceSubjectTarget - taskCalculationPair.getValue().distanceSubjectSource > 0)
+                    .peek(taskCalculationPair -> {
+                        if (taskCalculationPair.getValue().similarityFromSource < 0.5) System.out.println("filtered because its not in line: " + taskCalculationPair.getKey()) ;
+                    })
+                    .filter(taskCalculationPair -> taskCalculationPair.getValue().similarityFromSource > 0.5)
+                    .filter(taskCalculationPair -> !checkForIntersectionWithSubject(finalFirstSubjectTaskRelation.getKey(), taskCalculationPair.getKey()))
+                    .sorted(Comparator.comparingDouble(o -> o.getValue().distanceSubjectTarget))
+                    .findFirst();
+
+                //savedSubjects.get(savedSubjects.indexOf(firstSubjectTaskRelation.getKey())).addTask(firstSubjectTaskRelation.getValue());
+                firstSubjectTaskRelation.getKey().addTasks(firstSubjectTaskRelation.getValue());
+                //savedTasks.get(savedTasks.indexOf(firstSubjectTaskRelation.getValue())).setAssignedTo(firstSubjectTaskRelation.getKey());
+                firstSubjectTaskRelation.getValue().setSubject(firstSubjectTaskRelation.getKey());
+
+                if (followUp.isPresent()) {
+                    Pair<Card, Calculation> taskCalculationPair = followUp.get();
+                    firstSubjectTaskRelation = new Pair<>(firstSubjectTaskRelation.getKey(), taskCalculationPair.getKey());
+                } else {
+                    firstSubjectTaskRelation = null;
+                }
+            }
+        }
+
+        if (cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).filter(card -> card.getTasks().size() == 0).count() > 0) {
+            // there are subjects without assigned tasks
+            System.out.println("Fixing Subjects");
+
+            // reassign tasks for unused subjects
+            cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).filter(card -> card.getTasks().size() == 0)
+                .forEach(subject -> {
+                    Card closestTask = findClosestTask(subject);
+                    closestTask.getSubject().removeTasks(closestTask);
+                    subject.addTasks(closestTask);
+                    closestTask.setSubject(subject);
+                });
+        }
+
+        // TODO was ist mit nicht zugeordneten Tasks
+
+        for (int i = 0; i < 100; i++) {
+            checkInReverseOrder();
+        }
+
     }
 
+
+    private void checkInReverseOrder() {
+
+        //if (savedSubjects.size() >= savedTasks.size()) return;
+
+        if (cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).count() >= cards.stream().filter(card -> card.getCardType().equals(CardType.TASK)).count()) return;
+
+        cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT))
+            .forEach(subject -> {
+                Set<Pair<Card, Calculation>> followUpTasks = findFollowUpTask(new Pair<>(subject, subject.getTasks().get(subject.getTasks().size() - 1)));
+
+                Optional<Pair<Card, Calculation>> followUp = followUpTasks.stream()
+                    .filter(taskCalculationPair -> taskCalculationPair.getValue().isValidSimilarity)
+                    .filter(taskCalculationPair -> taskCalculationPair.getValue().distanceSubjectTarget - taskCalculationPair.getValue().distanceSubjectSource > 0)
+                    .peek(taskCalculationPair -> {
+                        if (taskCalculationPair.getValue().similarityFromSource < 0.5)
+                            System.out.println("filtered because its not in line: " + taskCalculationPair.getKey());
+                    })
+                    .filter(taskCalculationPair -> taskCalculationPair.getValue().similarityFromSource > 0.5)
+                    .filter(taskCalculationPair -> !checkForIntersectionWithSubject(subject, taskCalculationPair.getKey()))
+                    .sorted(Comparator.comparingDouble(o -> o.getValue().distanceSubjectTarget))
+                    .findFirst();
+
+                if (followUp.isPresent()) {
+                    // Task which should be checked
+                    Card contested = followUp.get().getKey();
+                    Card currentlyAssignedSubject = contested.getSubject();
+                    //System.out.println("\tTask " + contested.id + " currently assigned to: " + currentlyAssignedSubject.id);
+
+                    if (currentlyAssignedSubject.getTasks().size() == 1) {
+                        //System.out.println("\t!!! cannot move task because it is the only task for its current subject");
+                    } else if ( currentlyAssignedSubject.getTasks().indexOf(contested) == 0) {
+                        //System.out.println("\t!!! cannot move task because it is the only task for its the starting task for its subject");
+                    } else if ( currentlyAssignedSubject.getTasks().indexOf(contested) == currentlyAssignedSubject.getTasks().size() - 1){
+                        //System.out.println("\tcontesting last task");
+
+                        //double distanceOriginal = Card.getDistance(savedSubjects.get(savedSubjects.indexOf(currentlyAssignedSubject)).assignedTasks.get(savedSubjects.get(savedSubjects.indexOf(currentlyAssignedSubject)).assignedTasks.indexOf(contested) - 1), contested);
+                        double distanceOriginal = Card.getDistance(currentlyAssignedSubject.getTasks().get(currentlyAssignedSubject.getTasks().size()-2), contested);
+                        double contender = Card.getDistance(subject.getTasks().get(subject.getTasks().size()-1), contested);
+
+                        if (distanceOriginal < contender) {
+                            // Do nothing
+                        } else {
+                            contested.getSubject().removeTasks(contested);
+                            subject.addTasks(contested);
+                            contested.setSubject(subject);
+                        }
+                    }
+                }
+            });
+
+
+
+    }
+
+    private Card findClosestTask(Card subject) {
+        return cards.stream()
+            .filter(card -> card.getCardType().equals(CardType.TASK))
+            .map(task -> new Pair<>(task, Card.getDistance(subject, task)))
+            .min(Comparator.comparingDouble(Pair::getValue))
+            .map(Pair::getKey)
+            .orElseThrow(() -> new IllegalStateException("blabla"));
+    }
+
+    private boolean checkForIntersectionWithSubject(Card baseSubject, Card task) {
+        Line2D inter = new Line2D.Double(baseSubject.getCenter().x, baseSubject.getCenter().y, task.getCenter().x, task.getCenter().y);
+
+        for (Card subject : cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).collect(Collectors.toSet())) {
+            if (!subject.equals(baseSubject)) {
+                Line2D l1 = new Line2D.Double(subject.getx1(), subject.gety1(), subject.getx2(), subject.gety2());
+                Line2D l2 = new Line2D.Double(subject.getx2(), subject.gety2(), subject.getx3(), subject.gety3());
+                Line2D l3 = new Line2D.Double(subject.getx3(), subject.gety3(), subject.getx4(), subject.gety4());
+                Line2D l4 = new Line2D.Double(subject.getx4(), subject.gety4(), subject.getx1(), subject.gety1());
+
+                if (l1.intersectsLine(inter) || l2.intersectsLine(inter) || l3.intersectsLine(inter) || l4.intersectsLine(inter)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Set<Pair<Card, Calculation>> findFollowUpTask(Pair<Card, Card> subjectTaskRelation) {
+        return preCalculatedValues.stream()
+            .filter(subjectSetPair -> subjectSetPair.getKey().equals(subjectTaskRelation.getKey()))
+            .map(subjectSetPair -> {
+                return subjectSetPair
+                    .getValue()
+                    .stream()
+                    .filter(taskSetPair -> taskSetPair.getKey().equals(subjectTaskRelation.getValue()))
+                    .findFirst()
+                    .map(Pair::getValue)
+                    .orElseThrow(() -> new IllegalStateException("did not found the requested task"));
+            })
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("did not found the requested task"));
+    }
+
+    private Pair<Card,Card> findFirstSubjectTaskRelation() {
+        return cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).filter(card -> card.getTasks().size() == 0)
+            .map(subject -> new Pair<>(subject,cards.stream().filter(card -> card.getCardType().equals(CardType.TASK)).filter(card -> Objects.isNull(card.getSubject()))
+                .map(task -> new Pair<>(task,Card.getDistance(subject, task)))
+                .min(Comparator.comparingDouble(Pair::getValue))
+                .orElseThrow(() -> new IllegalStateException("no minimum found"))))
+            .sorted(Comparator.comparingDouble(o -> o.getValue().getValue()))
+            .map(subjectPairPair -> new Pair<>(subjectPairPair.getKey(), subjectPairPair.getValue().getKey()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("no subject found"));
+    }
+
+    public boolean hasNotProceededSubjects() {
+        long count = cards.stream()
+            .filter(card -> card.getCardType().equals(CardType.SUBJECT))
+            .filter(card -> card.getTasks().size() == 0)
+            .count();
+
+        return count > 0;
+    }
+
+    public boolean hasNotProceededTasks() {
+        long count = cards.stream()
+            .filter(card -> card.getCardType().equals(CardType.TASK))
+            .filter(card -> Objects.isNull(card.getSubject()))
+            .count();
+
+        return count > 0;
+    }
 
     private boolean checkForStarLayout() {
         Set<Card> subjects = new HashSet<>(
