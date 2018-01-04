@@ -64,7 +64,7 @@ public class Card implements Serializable {
     @ManyToOne
     private Field field;
 
-    @Ignore
+    @Transient
     public Set<Card> assignedTasks;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

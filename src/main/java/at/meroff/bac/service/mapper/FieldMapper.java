@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Field and its DTO FieldDTO.
  */
-@Mapper(componentModel = "spring", uses = {CardMapperImpl.class})
+@Mapper(componentModel = "spring", uses = {CardMapper.class})
 public interface FieldMapper extends EntityMapper<FieldDTO, Field> {
 
 
