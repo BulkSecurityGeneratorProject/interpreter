@@ -42,6 +42,9 @@ public class CacheConfiguration {
             cm.createCache(at.meroff.bac.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(at.meroff.bac.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(at.meroff.bac.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(at.meroff.bac.domain.Field.class.getName(), jcacheConfiguration);
+            cm.createCache(at.meroff.bac.domain.Field.class.getName() + ".cards", jcacheConfiguration);
+            cm.createCache(at.meroff.bac.domain.Card.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

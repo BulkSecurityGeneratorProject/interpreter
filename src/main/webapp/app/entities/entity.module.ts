@@ -1,9 +1,13 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import { InterpreterFieldModule } from './field/field.module';
+import { InterpreterCardModule } from './card/card.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
     imports: [
+        InterpreterFieldModule,
+        InterpreterCardModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

@@ -1,0 +1,45 @@
+
+<div *ngIf="field">
+    <h2><span>Field</span> {{field.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{field.description}}</span>
+        </dd>
+        <dt><span>Orig Image</span></dt>
+        <dd>
+            <div *ngIf="field.origImage">
+                <a (click)="openFile(field.origImageContentType, field.origImage)">
+                    <img [src]="'data:' + field.origImageContentType + ';base64,' + field.origImage" style="max-width: 100%;" alt="field image"/>
+                </a>
+                {{field.origImageContentType}}, {{byteSize(field.origImage)}}
+            </div>
+        </dd>
+        <dt><span>Svg Image</span></dt>
+        <dd>
+            <div *ngIf="field.svgImage">
+                <a (click)="openFile(field.svgImageContentType, field.svgImage)">open</a>
+                {{field.svgImageContentType}}, {{byteSize(field.svgImage)}}
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'field/'+ field.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
+<jhi-card [fieldId]="fieldId"></jhi-card>
+
+
