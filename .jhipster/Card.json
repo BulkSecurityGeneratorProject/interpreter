@@ -6,6 +6,18 @@
             "otherEntityName": "field",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "tasks",
+            "otherEntityName": "card",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "subject"
+        },
+        {
+            "relationshipName": "subject",
+            "otherEntityName": "card",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [

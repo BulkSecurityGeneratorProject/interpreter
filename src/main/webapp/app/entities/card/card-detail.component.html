@@ -54,6 +54,12 @@
                 <a [routerLink]="['/field', card.fieldId]">{{card.fieldId}}</a>
             </div>
         </dd>
+        <dt><span>Subject</span></dt>
+        <dd>
+            <div *ngIf="card.subjectId">
+                <a [routerLink]="['/card', card.subjectId]">{{card.subjectId}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

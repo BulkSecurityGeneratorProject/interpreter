@@ -1,6 +1,6 @@
 package at.meroff.bac.domain;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,8 +8,9 @@ import javax.persistence.*;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.Objects;
 
 import at.meroff.bac.domain.enumeration.CardType;
 
@@ -64,8 +65,13 @@ public class Card implements Serializable {
     @ManyToOne
     private Field field;
 
-    @Transient
-    public Set<Card> assignedTasks;
+    @OneToMany(mappedBy = "subject")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Card> tasks = new HashSet<>();
+
+    @ManyToOne
+    private Card subject;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -230,6 +236,44 @@ public class Card implements Serializable {
 
     public void setField(Field field) {
         this.field = field;
+    }
+
+    public Set<Card> getTasks() {
+        return tasks;
+    }
+
+    public Card tasks(Set<Card> cards) {
+        this.tasks = cards;
+        return this;
+    }
+
+    public Card addTasks(Card card) {
+        this.tasks.add(card);
+        card.setSubject(this);
+        return this;
+    }
+
+    public Card removeTasks(Card card) {
+        this.tasks.remove(card);
+        card.setSubject(null);
+        return this;
+    }
+
+    public void setTasks(Set<Card> cards) {
+        this.tasks = cards;
+    }
+
+    public Card getSubject() {
+        return subject;
+    }
+
+    public Card subject(Card card) {
+        this.subject = card;
+        return this;
+    }
+
+    public void setSubject(Card card) {
+        this.subject = card;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="field"/>
 
+        <addForeignKeyConstraint baseColumnNames="subject_id"
+                                 baseTableName="card"
+                                 constraintName="fk_card_subject_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="card"/>
+
     </changeSet>
 </databaseChangeLog>

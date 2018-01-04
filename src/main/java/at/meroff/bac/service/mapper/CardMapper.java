@@ -12,9 +12,12 @@ import org.mapstruct.*;
 public interface CardMapper extends EntityMapper<CardDTO, Card> {
 
     @Mapping(source = "field.id", target = "fieldId")
+    @Mapping(source = "subject.id", target = "subjectId")
     CardDTO toDto(Card card); 
 
     @Mapping(source = "fieldId", target = "field")
+    @Mapping(target = "tasks", ignore = true)
+    @Mapping(source = "subjectId", target = "subject")
     Card toEntity(CardDTO cardDTO);
 
     default Card fromId(Long id) {

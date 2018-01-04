@@ -100,7 +100,11 @@ public class FieldService {
                     }
                 }
 
-                field.calculateRelations();
+                log.error("!!!!!!!!!!!!!!!!!!!! " + field.calculateRelations());
+
+                for (Card card : field.getCards()) {
+                    cardRepository.save(card);
+                }
 
             } catch (ParserConfigurationException | IOException | SAXException e) {
                 e.printStackTrace();

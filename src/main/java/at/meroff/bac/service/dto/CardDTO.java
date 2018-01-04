@@ -38,6 +38,8 @@ public class CardDTO implements Serializable {
 
     private Long fieldId;
 
+    private Long subjectId;
+
     public Long getId() {
         return id;
     }
@@ -140,6 +142,14 @@ public class CardDTO implements Serializable {
 
     public void setFieldId(Long fieldId) {
         this.fieldId = fieldId;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Long cardId) {
+        this.subjectId = cardId;
     }
 
     @Override

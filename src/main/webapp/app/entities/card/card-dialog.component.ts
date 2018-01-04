@@ -23,6 +23,8 @@ export class CardDialogComponent implements OnInit {
 
     fields: Field[];
 
+    cards: Card[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
@@ -36,6 +38,8 @@ export class CardDialogComponent implements OnInit {
         this.isSaving = false;
         this.fieldService.query()
             .subscribe((res: ResponseWrapper) => { this.fields = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.cardService.query()
+            .subscribe((res: ResponseWrapper) => { this.cards = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -73,6 +77,10 @@ export class CardDialogComponent implements OnInit {
     }
 
     trackFieldById(index: number, item: Field) {
+        return item.id;
+    }
+
+    trackCardById(index: number, item: Card) {
         return item.id;
     }
 }

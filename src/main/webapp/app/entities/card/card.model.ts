@@ -21,6 +21,8 @@ export class Card implements BaseEntity {
         public x4?: number,
         public y4?: number,
         public fieldId?: number,
+        public tasks?: BaseEntity[],
+        public subjectId?: number,
     ) {
     }
 }

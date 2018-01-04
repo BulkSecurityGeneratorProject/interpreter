@@ -115,6 +115,12 @@ public class CardQueryService extends QueryService<Card> {
             if (criteria.getFieldId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getFieldId(), Card_.field, Field_.id));
             }
+            if (criteria.getTasksId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getTasksId(), Card_.tasks, Card_.id));
+            }
+            if (criteria.getSubjectId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getSubjectId(), Card_.subject, Card_.id));
+            }
         }
         return specification;
     }

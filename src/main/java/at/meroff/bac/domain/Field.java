@@ -180,15 +180,12 @@ public class Field implements Serializable {
             "}";
     }
 
-    public void calculateRelations() {
-        List<Card> cards = checkForStarLayout();
+    public boolean calculateRelations() {
+        return checkForStarLayout();
 
-        if (cards == null) {
-
-        }
     }
 
-    private List<Card> checkForStarLayout() {
+    private boolean checkForStarLayout() {
         Set<Card> subjects = new HashSet<>(
             this.cards.stream()
                 .filter(card -> card.getCardType().equals(CardType.SUBJECT)).collect(Collectors.toSet())
@@ -217,7 +214,10 @@ public class Field implements Serializable {
                 Card key = subjectSetPair.getKey();
                 subjectSetPair.getValue().stream()
                     .sorted(Comparator.comparingDouble(value -> Card.getDistance(key,value)))
-                    .forEach(task -> key.assignedTasks.add(task));
+                    .forEach(task -> {
+                        key.getTasks().add(task);
+                        task.setSubject(key);
+                    });
                 return key;
             }).collect(Collectors.toList());
 
@@ -236,12 +236,12 @@ public class Field implements Serializable {
         if (average.isPresent()) {
             if (average.getAsDouble() < 0.3) {
                 System.out.println("Sternmuster entdeckt!!!");
-                return ret;
+                return true;
             } else {
-                return null;
+                return false;
             }
         } else {
-            return ret;
+            return true;
         }
     }
 }

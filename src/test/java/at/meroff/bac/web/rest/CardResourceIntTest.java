@@ -4,6 +4,8 @@ import at.meroff.bac.InterpreterApp;
 
 import at.meroff.bac.domain.Card;
 import at.meroff.bac.domain.Field;
+import at.meroff.bac.domain.Card;
+import at.meroff.bac.domain.Card;
 import at.meroff.bac.repository.CardRepository;
 import at.meroff.bac.service.CardService;
 import at.meroff.bac.service.dto.CardDTO;
@@ -713,6 +715,44 @@ public class CardResourceIntTest {
 
         // Get all the cardList where field equals to fieldId + 1
         defaultCardShouldNotBeFound("fieldId.equals=" + (fieldId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCardsByTasksIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Card tasks = CardResourceIntTest.createEntity(em);
+        em.persist(tasks);
+        em.flush();
+        card.addTasks(tasks);
+        cardRepository.saveAndFlush(card);
+        Long tasksId = tasks.getId();
+
+        // Get all the cardList where tasks equals to tasksId
+        defaultCardShouldBeFound("tasksId.equals=" + tasksId);
+
+        // Get all the cardList where tasks equals to tasksId + 1
+        defaultCardShouldNotBeFound("tasksId.equals=" + (tasksId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCardsBySubjectIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Card subject = CardResourceIntTest.createEntity(em);
+        em.persist(subject);
+        em.flush();
+        card.setSubject(subject);
+        cardRepository.saveAndFlush(card);
+        Long subjectId = subject.getId();
+
+        // Get all the cardList where subject equals to subjectId
+        defaultCardShouldBeFound("subjectId.equals=" + subjectId);
+
+        // Get all the cardList where subject equals to subjectId + 1
+        defaultCardShouldNotBeFound("subjectId.equals=" + (subjectId + 1));
     }
 
     /**

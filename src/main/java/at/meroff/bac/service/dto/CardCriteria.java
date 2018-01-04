@@ -59,6 +59,10 @@ public class CardCriteria implements Serializable {
 
     private LongFilter fieldId;
 
+    private LongFilter tasksId;
+
+    private LongFilter subjectId;
+
     public CardCriteria() {
     }
 
@@ -166,6 +170,22 @@ public class CardCriteria implements Serializable {
         this.fieldId = fieldId;
     }
 
+    public LongFilter getTasksId() {
+        return tasksId;
+    }
+
+    public void setTasksId(LongFilter tasksId) {
+        this.tasksId = tasksId;
+    }
+
+    public LongFilter getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(LongFilter subjectId) {
+        this.subjectId = subjectId;
+    }
+
     @Override
     public String toString() {
         return "CardCriteria{" +
@@ -182,6 +202,8 @@ public class CardCriteria implements Serializable {
                 (x4 != null ? "x4=" + x4 + ", " : "") +
                 (y4 != null ? "y4=" + y4 + ", " : "") +
                 (fieldId != null ? "fieldId=" + fieldId + ", " : "") +
+                (tasksId != null ? "tasksId=" + tasksId + ", " : "") +
+                (subjectId != null ? "subjectId=" + subjectId + ", " : "") +
             "}";
     }
 

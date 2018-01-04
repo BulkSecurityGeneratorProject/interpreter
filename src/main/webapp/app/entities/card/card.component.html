@@ -29,6 +29,7 @@
             <th><span>X 4</span></th>
             <th><span>Y 4</span></th>
             <th><span>Field</span></th>
+            <th><span>Subject</span></th>
             <th></th>
             </tr>
             </thead>
@@ -49,6 +50,11 @@
                 <td>
                     <div *ngIf="card.fieldId">
                         <a [routerLink]="['../field', card.fieldId  ]" >{{card.fieldId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="card.subjectId">
+                        <a [routerLink]="['../card', card.subjectId  ]" >{{card.subjectId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
