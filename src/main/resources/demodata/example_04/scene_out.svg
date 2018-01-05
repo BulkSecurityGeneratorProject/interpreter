@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg height="1224" version="1.1" width="1632" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg">
+ <defs>
+  <style type="text/css">
+<![CDATA[
+path {   fill: none;   stroke: black;   stroke-width: 1px;} text {   fill: black;   font-family: Arial,sans;   stroke-width: 0px;} #karterl {   stroke: black;   fill: none;   stroke-width: 1px;} .black { stroke: black; } .red { stroke: red; } .blue { stroke: blue; } .green { stroke: green; } .crossing { fill: #0080ff; stroke-width: 0px;fill-opacity: 0.2; } .endPoint { fill: #00ffff; stroke-width: 0px;fill-opacity: 0.2; } 
+]]>  </style>
+ </defs>
+ <g id="connectors">
+  <g id="karterl">
+   <g id="15">
+    <path class="karterl" d="M1024 66 L1024 66 L1003 164 L817 125 L837 27  Z"/>
+    <path class="marker" d="M1008 70 L1008 70 L991 154 L911 137 L929 54  Z"/>
+    <path class="roi" d="M1071 35 L1071 35 L1034 212 L769 156 L806 -20  Z"/>
+    <text x="960" y="104">
+15    </text>
+   </g>
+   <g id="45">
+    <path class="karterl" d="M276 57 L276 57 L373 129 L243 305 L146 233  Z"/>
+    <path class="marker" d="M274 75 L274 75 L357 136 L302 212 L218 150  Z"/>
+    <path class="roi" d="M266 -11 L266 -11 L441 119 L254 373 L78 243  Z"/>
+    <text x="288" y="143">
+45    </text>
+   </g>
+   <g id="16">
+    <path class="karterl" d="M1134 199 L1134 199 L1230 109 L1397 287 L1301 377  Z"/>
+    <path class="marker" d="M1153 206 L1153 206 L1235 129 L1307 205 L1225 282  Z"/>
+    <path class="roi" d="M1059 197 L1059 197 L1232 35 L1471 290 L1299 452  Z"/>
+    <text x="1230" y="205">
+16    </text>
+   </g>
+   <g id="60">
+    <path class="karterl" d="M403 132 L403 132 L499 211 L356 387 L259 308  Z"/>
+    <path class="marker" d="M400 150 L400 150 L482 218 L421 293 L338 226  Z"/>
+    <path class="roi" d="M396 62 L396 62 L570 204 L363 457 L189 316  Z"/>
+    <text x="410" y="222">
+60    </text>
+   </g>
+   <g id="17">
+    <path class="karterl" d="M783 280 L783 280 L800 178 L994 210 L977 313  Z"/>
+    <path class="marker" d="M798 275 L798 275 L813 188 L896 202 L881 289  Z"/>
+    <path class="roi" d="M735 314 L735 314 L766 130 L1042 176 L1011 360  Z"/>
+    <text x="847" y="238">
+17    </text>
+   </g>
+   <g id="38">
+    <path class="karterl" d="M511 468 L511 468 L406 394 L535 211 L640 284  Z"/>
+    <path class="marker" d="M513 449 L513 449 L423 387 L479 308 L568 371  Z"/>
+    <path class="roi" d="M524 539 L524 539 L335 407 L523 139 L712 272  Z"/>
+    <text x="496" y="379">
+38    </text>
+   </g>
+   <g id="1">
+    <path class="karterl" d="M789 571 L789 571 L677 495 L818 289 L930 365  Z"/>
+    <path class="marker" d="M791 551 L791 551 L696 486 L756 397 L851 463  Z"/>
+    <path class="roi" d="M803 647 L803 647 L602 509 L804 214 L1005 351  Z"/>
+    <text x="773" y="474">
+1    </text>
+   </g>
+   <g id="41">
+    <path class="karterl" d="M1098 404 L1098 404 L1220 436 L1163 653 L1041 621  Z"/>
+    <path class="marker" d="M1102 422 L1102 422 L1207 450 L1182 542 L1078 515  Z"/>
+    <path class="roi" d="M1062 342 L1062 342 L1282 400 L1199 715 L979 657  Z"/>
+    <text x="1142" y="482">
+41    </text>
+   </g>
+   <g id="28">
+    <path class="karterl" d="M164 445 L164 445 L284 455 L266 681 L145 671  Z"/>
+    <path class="marker" d="M171 462 L171 462 L274 470 L266 567 L163 559  Z"/>
+    <path class="roi" d="M119 393 L119 393 L337 410 L310 733 L93 716  Z"/>
+    <text x="218" y="514">
+28    </text>
+   </g>
+   <g id="3">
+    <path class="karterl" d="M1395 696 L1395 696 L1258 674 L1295 449 L1432 471  Z"/>
+    <path class="marker" d="M1388 678 L1388 678 L1271 659 L1287 563 L1404 582  Z"/>
+    <path class="roi" d="M1441 759 L1441 759 L1195 719 L1249 385 L1495 425  Z"/>
+    <text x="1338" y="620">
+3    </text>
+   </g>
+   <g id="51">
+    <path class="karterl" d="M1582 702 L1582 702 L1456 707 L1446 483 L1573 478  Z"/>
+    <path class="marker" d="M1572 686 L1572 686 L1464 691 L1460 595 L1568 590  Z"/>
+    <path class="roi" d="M1635 750 L1635 750 L1408 760 L1394 435 L1621 425  Z"/>
+    <text x="1516" y="640">
+51    </text>
+   </g>
+   <g id="50">
+    <path class="karterl" d="M334 683 L334 683 L435 570 L617 733 L516 845  Z"/>
+    <path class="marker" d="M355 686 L355 686 L441 590 L519 659 L433 756  Z"/>
+    <path class="roi" d="M249 688 L249 688 L430 485 L702 728 L521 931  Z"/>
+    <text x="437" y="673">
+50    </text>
+   </g>
+   <g id="44">
+    <path class="karterl" d="M791 858 L791 858 L778 732 L988 711 L1000 837  Z"/>
+    <path class="marker" d="M805 847 L805 847 L794 739 L884 730 L895 838  Z"/>
+    <path class="roi" d="M745 913 L745 913 L723 686 L1033 656 L1055 882  Z"/>
+    <text x="845" y="789">
+44    </text>
+   </g>
+   <g id="22">
+    <path class="karterl" d="M1230 672 L1230 672 L1331 779 L1133 966 L1032 859  Z"/>
+    <path class="marker" d="M1222 694 L1222 694 L1309 785 L1224 865 L1138 774  Z"/>
+    <path class="roi" d="M1232 589 L1232 589 L1414 782 L1131 1050 L948 857  Z"/>
+    <text x="1223" y="779">
+22    </text>
+   </g>
+   <g id="9">
+    <path class="karterl" d="M174 820 L174 820 L293 701 L498 905 L378 1024  Z"/>
+    <path class="marker" d="M198 826 L198 826 L300 724 L387 812 L285 914  Z"/>
+    <path class="roi" d="M79 820 L79 820 L293 605 L593 906 L378 1120  Z"/>
+    <text x="292" y="819">
+9    </text>
+   </g>
+   <g id="39">
+    <path class="karterl" d="M27 944 L27 944 L154 831 L349 1048 L223 1162  Z"/>
+    <path class="marker" d="M50 952 L50 952 L159 855 L242 947 L134 1045  Z"/>
+    <path class="roi" d="M-69 939 L-69 939 L159 734 L445 1053 L218 1258  Z"/>
+    <text x="146" y="950">
+39    </text>
+   </g>
+   <g id="18">
+    <path class="karterl" d="M783 1066 L783 1066 L783 918 L1014 918 L1014 1066  Z"/>
+    <path class="marker" d="M800 1055 L800 1055 L800 929 L899 929 L899 1055  Z"/>
+    <path class="roi" d="M724 1125 L724 1125 L724 859 L1073 859 L1073 1125  Z"/>
+    <text x="850" y="992">
+18    </text>
+   </g>
+  </g>
+  <path class="connector" d="M1022 120 L1022 120 L1044 112 L1058 113 M1022 120 L1022 120 L1018 120 L1022 120 L1029 124 L1029 124 L1052 127 L1073 136 L1092 147 L1111 158 L1132 167 L1153 176 L1157 176 M1029 124 L1029 124 L1046 137 L1050 138 " id="0" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M1364 332 L1364 332 L1386 336 L1405 346 M1364 332 L1364 332 L1358 330 M1364 332 L1364 332 L1375 351 L1385 362 L1385 362 L1400 377 L1412 395 L1424 413 L1436 431 L1448 449 L1460 467 L1470 480 M1385 362 L1385 362 L1386 366 " id="3" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M771 341 L771 341 L777 336 M771 341 L771 341 L764 318 L758 294 L753 269 L747 245 L742 220 L740 192 L743 165 L753 145 L770 132 L794 126 L805 124 M771 341 L771 341 L769 351 L769 351 L758 346 M769 351 L769 351 L770 356 " id="4" isConnector="true" loop="false" thick="2"/>
+  <path class="connector" d="M298 355 L298 355 L303 346 M298 355 L298 355 L292 356 M298 355 L298 355 L286 373 L273 390 L260 407 L249 426 L240 439 L240 439 L239 439 L240 439 L234 449 " id="5" isConnector="true" loop="false" thick="2"/>
+  <path class="connector" d="M1170 637 L1170 637 L1171 638 M1170 637 L1170 637 L1184 636 M1170 637 L1170 637 L1169 638 M1186 628 L1186 628 L1186 630 M1187 624 L1187 624 L1187 625 M1189 611 L1189 611 L1189 614 M1190 605 L1190 605 L1190 608 M1193 592 L1193 592 L1191 603 M1194 587 L1194 587 L1194 588 M1197 571 L1197 571 L1197 572 M1198 566 L1198 566 L1198 568 " id="7" isConnector="true" loop="false" thick="0"/>
+  <path class="connector" d="L199 682 L201 682 L199 682 L199 678 L199 682 L190 695 M201 682 L201 682 L215 686 M201 682 L201 682 L207 706 L218 725 L232 741 L240 748 L240 748 L244 748 L240 748 L240 751 M190 695 L190 695 L191 696 M190 695 L190 695 L188 695 " id="8" isConnector="true" loop="false" thick="3"/>
+  <path class="connector" d="M1309 702 L1309 702 L1327 696 L1330 721 L1330 725 M1309 702 L1309 702 L1302 704 M1309 702 L1309 702 L1299 722 L1291 736 M1302 704 L1302 704 L1299 704 L1302 704 L1302 706 " id="9" isConnector="true" loop="false" thick="3"/>
+  <path class="connector" d="M1092 934 L1092 934 L1094 932 M1092 934 L1092 934 L1075 940 M1092 934 L1092 934 L1083 955 L1070 972 L1057 989 L1046 1004 " id="12" isConnector="true" loop="false" thick="4"/>
+  <path class="connector" d="M811 137 L811 137 L827 140 M828 141 L828 141 L834 141 M840 142 L840 142 L843 142 M847 143 L847 143 L849 143 M850 144 L850 144 L856 145 L863 145 L889 149 L898 152 " id="19" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M364 142 L364 142 L363 146 " id="20" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M493 229 L493 229 L492 231 " id="23" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="L792 284 L792 286 L792 288 L792 289 " id="24" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M885 300 L885 300 L912 303 L938 307 L964 311 L972 312 M978 311 L978 311 L982 313 " id="25" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M740 539 L740 539 L738 565 L733 590 L727 614 L721 638 L715 662 L708 685 L700 707 L692 729 L683 750 L673 770 L662 789 L650 807 L638 825 L624 841 L608 855 L591 868 L573 880 L553 890 L530 897 L505 902 L494 901 " id="33" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M346 695 L346 695 L347 698 " id="39" isConnector="true" loop="false" thick="1"/>
+  <path class="connector" d="M1014 844 L1014 844 L987 847 L959 849 L932 851 L930 851 L914 853 M910 850 L910 850 L912 853 " id="46" isConnector="true" loop="false" thick="1"/>
+</g>
+</svg>
