@@ -1,5 +1,6 @@
 package at.meroff.bac.web.rest;
 
+import at.meroff.bac.service.dto.FieldDTOSmall;
 import com.codahale.metrics.annotation.Timed;
 import at.meroff.bac.service.FieldService;
 import at.meroff.bac.web.rest.errors.BadRequestAlertException;
@@ -89,9 +90,9 @@ public class FieldResource {
      */
     @GetMapping("/fields")
     @Timed
-    public ResponseEntity<List<FieldDTO>> getAllFields(FieldCriteria criteria) {
+    public ResponseEntity<List<FieldDTOSmall>> getAllFields(FieldCriteria criteria) {
         log.debug("REST request to get Fields by criteria: {}", criteria);
-        List<FieldDTO> entityList = fieldQueryService.findByCriteria(criteria);
+        List<FieldDTOSmall> entityList = fieldQueryService.findByCriteria(criteria);
         return ResponseEntity.ok().body(entityList);
     }
 

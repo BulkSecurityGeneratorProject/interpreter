@@ -3,12 +3,12 @@ package at.meroff.bac.service;
 import at.meroff.bac.domain.Card;
 import at.meroff.bac.domain.Field;
 import at.meroff.bac.domain.enumeration.CardType;
-import at.meroff.bac.domain.enumeration.LayoutType;
 import at.meroff.bac.repository.CardRepository;
 import at.meroff.bac.repository.FieldRepository;
-import at.meroff.bac.service.dto.CardDTO;
 import at.meroff.bac.service.dto.FieldDTO;
+import at.meroff.bac.service.dto.FieldDTOSmall;
 import at.meroff.bac.service.mapper.FieldMapper;
+import at.meroff.bac.service.mapper.FieldSmallMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -44,10 +43,13 @@ public class FieldService {
 
     private final FieldMapper fieldMapper;
 
-    public FieldService(FieldRepository fieldRepository, CardRepository cardRepository, FieldMapper fieldMapper) {
+    private final FieldSmallMapper fieldSmallMapper;
+
+    public FieldService(FieldRepository fieldRepository, CardRepository cardRepository, FieldMapper fieldMapper, FieldSmallMapper fieldSmallMapper) {
         this.fieldRepository = fieldRepository;
         this.fieldMapper = fieldMapper;
         this.cardRepository = cardRepository;
+        this.fieldSmallMapper = fieldSmallMapper;
     }
 
     /**
@@ -122,10 +124,10 @@ public class FieldService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<FieldDTO> findAll() {
+    public LinkedList<FieldDTOSmall> findAll() {
         log.debug("Request to get all Fields");
         return fieldRepository.findAll().stream()
-            .map(fieldMapper::toDto)
+            .map(field -> fieldSmallMapper.toDto(field))
             .collect(Collectors.toCollection(LinkedList::new));
     }
 

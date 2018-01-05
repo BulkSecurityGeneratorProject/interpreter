@@ -3,6 +3,8 @@ package at.meroff.bac.service;
 
 import java.util.List;
 
+import at.meroff.bac.service.dto.FieldDTOSmall;
+import at.meroff.bac.service.mapper.FieldSmallMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,7 +22,6 @@ import at.meroff.bac.service.dto.FieldCriteria;
 
 import at.meroff.bac.service.dto.FieldDTO;
 import at.meroff.bac.service.mapper.FieldMapper;
-import at.meroff.bac.domain.enumeration.LayoutType;
 
 /**
  * Service for executing complex queries for Field entities in the database.
@@ -38,10 +39,12 @@ public class FieldQueryService extends QueryService<Field> {
     private final FieldRepository fieldRepository;
 
     private final FieldMapper fieldMapper;
+    private final FieldSmallMapper fieldSmallMapper;
 
-    public FieldQueryService(FieldRepository fieldRepository, FieldMapper fieldMapper) {
+    public FieldQueryService(FieldRepository fieldRepository, FieldMapper fieldMapper, FieldSmallMapper fieldSmallMapper) {
         this.fieldRepository = fieldRepository;
         this.fieldMapper = fieldMapper;
+        this.fieldSmallMapper = fieldSmallMapper;
     }
 
     /**
@@ -50,10 +53,10 @@ public class FieldQueryService extends QueryService<Field> {
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<FieldDTO> findByCriteria(FieldCriteria criteria) {
+    public List<FieldDTOSmall> findByCriteria(FieldCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specifications<Field> specification = createSpecification(criteria);
-        return fieldMapper.toDto(fieldRepository.findAll(specification));
+        return fieldSmallMapper.toDto(fieldRepository.findAll(specification));
     }
 
     /**
