@@ -19,8 +19,6 @@ public class FieldDTOSmall implements Serializable {
 
     private LayoutType layoutType;
 
-    private Set<CardDTO> cards;
-
     public Long getId() {
         return id;
     }
@@ -43,14 +41,6 @@ public class FieldDTOSmall implements Serializable {
 
     public void setLayoutType(LayoutType layoutType) {
         this.layoutType = layoutType;
-    }
-
-    public Set<CardDTO> getCards() {
-        return cards;
-    }
-
-    public void setCards(Set<CardDTO> cards) {
-        this.cards = cards;
     }
 
     @Override
