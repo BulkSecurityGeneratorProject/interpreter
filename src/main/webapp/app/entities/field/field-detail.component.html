@@ -1,0 +1,67 @@
+
+<div *ngIf="field">
+    <h2><span>Field</span> {{field.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{field.description}}</span>
+        </dd>
+        <div class="row">
+            <div class="col-md-8">
+                <jhi-card [fieldId]="fieldId"></jhi-card>
+            </div>
+            <div class="col-md-4">
+                <div class="row-md-4">
+                    <dt><span>Result Image</span></dt>
+                    <dd>
+                        <div *ngIf="field.resultImage">
+                            <a (click)="openFile(field.resultImageContentType, field.resultImage)">
+                                <img [src]="'data:' + field.resultImageContentType + ';base64,' + field.resultImage" style="max-width: 100%;" alt="field image"/>
+                            </a>
+                            {{field.resultImageContentType}}, {{byteSize(field.resultImage)}}
+                        </div>
+                    </dd>
+                </div>
+                <div class="row-md-4">
+                    <dt><span>Orig Image</span></dt>
+                    <dd>
+                        <div *ngIf="field.origImage">
+                            <a (click)="openFile(field.origImageContentType, field.origImage)">
+                                <img [src]="'data:' + field.origImageContentType + ';base64,' + field.origImage" style="max-width: 100%;" alt="field image"/>
+                            </a>
+                            {{field.origImageContentType}}, {{byteSize(field.origImage)}}
+                        </div>
+                    </dd>
+                </div>
+            </div>
+        </div>
+        <dt><span>Layout Type</span></dt>
+        <dd>
+            <span>{{field.layoutType}}</span>
+        </dd>
+        <dt><span>Svg Image</span></dt>
+        <dd>
+            <div *ngIf="field.svgImage">
+                <a (click)="openFile(field.svgImageContentType, field.svgImage)">open</a>
+                {{field.svgImageContentType}}, {{byteSize(field.svgImage)}}
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'field/'+ field.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
+
