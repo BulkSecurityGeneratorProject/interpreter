@@ -21,6 +21,7 @@
             <th><span>Orig Image</span></th>
             <th><span>Svg Image</span></th>
             <th><span>Layout Type</span></th>
+            <th><span>Result Image</span></th>
             <th></th>
             </tr>
             </thead>
@@ -39,6 +40,12 @@
                     <span *ngIf="field.svgImage">{{field.svgImageContentType}}, {{byteSize(field.svgImage)}}</span>
                 </td>
                 <td>{{field.layoutType}}</td>
+                <td>
+                    <a *ngIf="field.resultImage" (click)="openFile(field.resultImageContentType, field.resultImage)">
+                        <img [src]="'data:' + field.resultImageContentType + ';base64,' + field.resultImage" style="max-height: 30px;" alt="field image"/>
+                    </a>
+                    <span *ngIf="field.resultImage">{{field.resultImageContentType}}, {{byteSize(field.resultImage)}}</span>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

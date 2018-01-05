@@ -27,6 +27,11 @@
             "fieldName": "layoutType",
             "fieldType": "LayoutType",
             "fieldValues": "DEFAULT,STAR"
+        },
+        {
+            "fieldName": "resultImage",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         }
     ],
     "changelogDate": "20180104123831",

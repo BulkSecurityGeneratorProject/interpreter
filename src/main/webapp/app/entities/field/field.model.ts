@@ -14,6 +14,8 @@ export class Field implements BaseEntity {
         public svgImageContentType?: string,
         public svgImage?: any,
         public layoutType?: LayoutType,
+        public resultImageContentType?: string,
+        public resultImage?: any,
         public cards?: BaseEntity[],
     ) {
     }

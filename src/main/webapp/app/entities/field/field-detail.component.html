@@ -28,6 +28,15 @@
         <dd>
             <span>{{field.layoutType}}</span>
         </dd>
+        <dt><span>Result Image</span></dt>
+        <dd>
+            <div *ngIf="field.resultImage">
+                <a (click)="openFile(field.resultImageContentType, field.resultImage)">
+                    <img [src]="'data:' + field.resultImageContentType + ';base64,' + field.resultImage" style="max-width: 100%;" alt="field image"/>
+                </a>
+                {{field.resultImageContentType}}, {{byteSize(field.resultImage)}}
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"
@@ -44,4 +53,3 @@
         <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
     </button>
 </div>
-<jhi-card [fieldId]="fieldId"></jhi-card>

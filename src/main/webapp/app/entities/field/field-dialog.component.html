@@ -59,6 +59,23 @@
                 <option value="STAR">STAR</option>
             </select>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_resultImage">Result Image</label>
+            <div>
+                <img [src]="'data:' + field.resultImageContentType + ';base64,' + field.resultImage" style="max-height: 100px;" *ngIf="field.resultImage" alt="field image"/>
+                <div *ngIf="field.resultImage" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{field.resultImageContentType}}, {{byteSize(field.resultImage)}}</span>
+                    <button type="button" (click)="clearInputImage('resultImage', 'resultImageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_resultImage" (change)="setFileData($event, field, 'resultImage', true)" accept="image/*"/>
+            </div>
+            <input type="hidden" class="form-control" name="resultImage" id="field_resultImage"
+                [(ngModel)]="field.resultImage" />
+            <input type="hidden" class="form-control" name="resultImageContentType" id="field_resultImageContentType"
+                [(ngModel)]="field.resultImageContentType" />
+        </div>
 
     </div>
     <div class="modal-footer">

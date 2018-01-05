@@ -27,6 +27,10 @@ public class FieldDTO implements Serializable {
 
     private LayoutType layoutType;
 
+    @Lob
+    private byte[] resultImage;
+    private String resultImageContentType;
+
     private Set<CardDTO> cards;
 
     public Long getId() {
@@ -85,6 +89,22 @@ public class FieldDTO implements Serializable {
         this.layoutType = layoutType;
     }
 
+    public byte[] getResultImage() {
+        return resultImage;
+    }
+
+    public void setResultImage(byte[] resultImage) {
+        this.resultImage = resultImage;
+    }
+
+    public String getResultImageContentType() {
+        return resultImageContentType;
+    }
+
+    public void setResultImageContentType(String resultImageContentType) {
+        this.resultImageContentType = resultImageContentType;
+    }
+
     public Set<CardDTO> getCards() {
         return cards;
     }
@@ -122,6 +142,7 @@ public class FieldDTO implements Serializable {
             ", origImage='" + getOrigImage() + "'" +
             ", svgImage='" + getSvgImage() + "'" +
             ", layoutType='" + getLayoutType() + "'" +
+            ", resultImage='" + getResultImage() + "'" +
             "}";
     }
 }

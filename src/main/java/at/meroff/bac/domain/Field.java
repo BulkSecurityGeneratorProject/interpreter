@@ -72,6 +72,13 @@ public class Field implements Serializable {
     @Column(name = "layout_type")
     private LayoutType layoutType;
 
+    @Lob
+    @Column(name = "result_image")
+    private byte[] resultImage;
+
+    @Column(name = "result_image_content_type")
+    private String resultImageContentType;
+
     @OneToMany(mappedBy = "field")
     //@JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -167,6 +174,32 @@ public class Field implements Serializable {
         this.layoutType = layoutType;
     }
 
+    public byte[] getResultImage() {
+        return resultImage;
+    }
+
+    public Field resultImage(byte[] resultImage) {
+        this.resultImage = resultImage;
+        return this;
+    }
+
+    public void setResultImage(byte[] resultImage) {
+        this.resultImage = resultImage;
+    }
+
+    public String getResultImageContentType() {
+        return resultImageContentType;
+    }
+
+    public Field resultImageContentType(String resultImageContentType) {
+        this.resultImageContentType = resultImageContentType;
+        return this;
+    }
+
+    public void setResultImageContentType(String resultImageContentType) {
+        this.resultImageContentType = resultImageContentType;
+    }
+
     public Set<Card> getCards() {
         return cards;
     }
@@ -223,6 +256,8 @@ public class Field implements Serializable {
             ", svgImage='" + getSvgImage() + "'" +
             ", svgImageContentType='" + getSvgImageContentType() + "'" +
             ", layoutType='" + getLayoutType() + "'" +
+            ", resultImage='" + getResultImage() + "'" +
+            ", resultImageContentType='" + getResultImageContentType() + "'" +
             "}";
     }
 
@@ -409,29 +444,6 @@ public class Field implements Serializable {
 
             });
 
-
-// attach the rectangle to the svg root element
-
-
-        /*DOMSource domSource = new DOMSource(doc);
-        StringWriter writer = new StringWriter();
-        StreamResult result = new StreamResult(writer);
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try {
-            transformer = tf.newTransformer();
-            transformer.transform(domSource, result);
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        }
-
-        //System.out.println("XML IN String format is: \n" + writer.toString());
-        //System.out.println(Arrays.toString(Base64.getEncoder().encode(writer.toString().getBytes())));
-
-        setSvgImage(writer.toString().getBytes());*/
-
         try {
 
 
@@ -448,10 +460,9 @@ public class Field implements Serializable {
             a.close();
 
 
-            setOrigImage(a.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TranscoderException e) {
+            setResultImage(a.toByteArray());
+            setResultImageContentType("image/jpeg");
+        } catch (IOException | TranscoderException e) {
             e.printStackTrace();
         }
 
