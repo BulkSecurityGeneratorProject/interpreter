@@ -4,6 +4,7 @@ import at.meroff.bac.domain.enumeration.CardType;
 import at.meroff.bac.helper.Calculation;
 import at.meroff.bac.helper.Statistics;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.imageio.plugins.jpeg.JPEG;
 import javafx.util.Pair;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
@@ -74,6 +75,7 @@ public class Field implements Serializable {
 
     @Lob
     @Column(name = "result_image")
+    @JsonIgnore
     private byte[] resultImage;
 
     @Column(name = "result_image_content_type")

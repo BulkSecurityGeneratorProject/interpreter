@@ -11,7 +11,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {CardMapper.class})
 public interface FieldMapper extends EntityMapper<FieldDTO, Field> {
 
-
     FieldDTO toDto(Field field);
 
     @Mapping(target = "cards", ignore = true)

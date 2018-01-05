@@ -20,14 +20,14 @@
             <th><span>Card Id</span></th>
             <th><span>Description</span></th>
             <th><span>Card Type</span></th>
-            <th><span>X 1</span></th>
+            <!--<th><span>X 1</span></th>
             <th><span>Y 1</span></th>
             <th><span>X 2</span></th>
             <th><span>Y 2</span></th>
             <th><span>X 3</span></th>
             <th><span>Y 3</span></th>
             <th><span>X 4</span></th>
-            <th><span>Y 4</span></th>
+            <th><span>Y 4</span></th>-->
             <th><span>Field</span></th>
             <th><span>Subject</span></th>
             <th></th>
@@ -39,14 +39,14 @@
                 <td>{{card.cardId}}</td>
                 <td>{{card.description}}</td>
                 <td>{{card.cardType}}</td>
-                <td>{{card.x1}}</td>
+                <!--<td>{{card.x1}}</td>
                 <td>{{card.y1}}</td>
                 <td>{{card.x2}}</td>
                 <td>{{card.y2}}</td>
                 <td>{{card.x3}}</td>
                 <td>{{card.y3}}</td>
                 <td>{{card.x4}}</td>
-                <td>{{card.y4}}</td>
+                <td>{{card.y4}}</td>-->
                 <td>
                     <div *ngIf="card.fieldId">
                         <a [routerLink]="['../field', card.fieldId  ]" >{{card.fieldId}}</a>
