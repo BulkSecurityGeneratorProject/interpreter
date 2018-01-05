@@ -4,12 +4,18 @@ import at.meroff.bac.domain.enumeration.CardType;
 import at.meroff.bac.helper.Calculation;
 import at.meroff.bac.helper.Statistics;
 
+import com.sun.imageio.plugins.jpeg.JPEG;
 import javafx.util.Pair;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.apache.batik.transcoder.*;
+import org.apache.batik.transcoder.image.ImageTranscoder;
+import org.apache.batik.transcoder.image.JPEGTranscoder;
+import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.xml.security.utils.XMLUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -19,10 +25,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import java.awt.geom.Line2D;
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -303,9 +308,17 @@ public class Field implements Serializable {
         // get the root element (the svg element)
         Element svgRoot = doc.getDocumentElement();
 
+        InputStream in = new ByteArrayInputStream(getOrigImage());
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 // set the width and height attribute on the root svg element
-        svgRoot.setAttributeNS(null, "width", "4000");
-        svgRoot.setAttributeNS(null, "height", "4500");
+        svgRoot.setAttributeNS(null, "width", Integer.toString(image.getWidth()));
+        svgRoot.setAttributeNS(null, "height", Integer.toString(image.getHeight()));
 
 // create the rectangle
 
@@ -314,17 +327,17 @@ public class Field implements Serializable {
             .forEach(card -> {
                 Element rectangle = doc.createElementNS(svgNS, "rect");
 
-                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()/2));
-                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()/2));
-                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()/2-card.getSmallestX()/2));
-                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()/2-card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()));
+                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()));
+                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()-card.getSmallestX()));
+                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()-card.getSmallestY()));
                 rectangle.setAttributeNS(null, "style", "fill:blue");
                 svgRoot.appendChild(rectangle);
 
                 Element text = doc.createElementNS(svgNS,"text");
-                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX())/2)));
-                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY())/2)));
-                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: 44px;");
+                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX()))));
+                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY()))));
+                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: " + (card.getBiggestY()-card.getSmallestY())/3 + "px;");
                 text.setTextContent(card.getCardId().toString());
                 svgRoot.appendChild(text);
 
@@ -334,17 +347,18 @@ public class Field implements Serializable {
             .forEach(card -> {
                 Element rectangle = doc.createElementNS(svgNS, "rect");
 
-                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()/2));
-                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()/2));
-                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()/2-card.getSmallestX()/2));
-                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()/2-card.getSmallestY()/2));
+                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()));
+                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()));
+                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()-card.getSmallestX()));
+                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()-card.getSmallestY()));
                 rectangle.setAttributeNS(null, "style", "fill:red");
                 svgRoot.appendChild(rectangle);
 
                 Element text = doc.createElementNS(svgNS,"text");
-                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX())/2)));
-                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY())/2)));
-                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: 44px;");
+                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX()))));
+                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY()))));
+                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY()))));
+                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: " + (card.getBiggestY()-card.getSmallestY())/3 + "px;");
                 text.setTextContent(card.getCardId().toString());
                 svgRoot.appendChild(text);
             });
@@ -353,17 +367,17 @@ public class Field implements Serializable {
             .forEach(card -> {
                 Element rectangle = doc.createElementNS(svgNS, "rect");
 
-                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()/2));
-                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()/2));
-                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()/2-card.getSmallestX()/2));
-                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()/2-card.getSmallestY()/2));
-                rectangle.setAttributeNS(null, "style", "fill:yellow");
+                rectangle.setAttributeNS(null, "x", Integer.toString(card.getSmallestX()));
+                rectangle.setAttributeNS(null, "y", Integer.toString(card.getSmallestY()));
+                rectangle.setAttributeNS(null, "width", Integer.toString(card.getBiggestX()-card.getSmallestX()));
+                rectangle.setAttributeNS(null, "height", Integer.toString(card.getBiggestY()-card.getSmallestY()));
+                rectangle.setAttributeNS(null, "style", "fill: #ffd700");
                 svgRoot.appendChild(rectangle);
 
                 Element text = doc.createElementNS(svgNS,"text");
-                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX())/2)));
-                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY())/2)));
-                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: 44px;");
+                text.setAttributeNS(null, "x", Integer.toString((((int) card.getCenter().getX()))));
+                text.setAttributeNS(null, "y", Integer.toString((((int) card.getCenter().getY()))));
+                text.setAttributeNS(null, "style", "fill: #ffffff; stroke: none; font-size: " + (card.getBiggestY()-card.getSmallestY())/3 + "px;");
                 text.setTextContent(card.getCardId().toString());
                 svgRoot.appendChild(text);
             });
@@ -374,19 +388,19 @@ public class Field implements Serializable {
                 for (Card card1 : card.getTasks()) {
                     if (card.getTasks().indexOf(card1) == 0) {
                         Element line = doc.createElementNS(svgNS, "line");
-                        line.setAttributeNS(null, "x1", Integer.toString((int) card.getCenter().getX()/2));
-                        line.setAttributeNS(null, "x2", Integer.toString((int) card1.getCenter().getX()/2));
-                        line.setAttributeNS(null, "y1", Integer.toString((int) card.getCenter().getY()/2));
-                        line.setAttributeNS(null, "y2", Integer.toString((int) card1.getCenter().getY()/2));
+                        line.setAttributeNS(null, "x1", Integer.toString((int) card.getCenter().getX()));
+                        line.setAttributeNS(null, "x2", Integer.toString((int) card1.getCenter().getX()));
+                        line.setAttributeNS(null, "y1", Integer.toString((int) card.getCenter().getY()));
+                        line.setAttributeNS(null, "y2", Integer.toString((int) card1.getCenter().getY()));
                         line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
                         svgRoot.appendChild(line);
                     } else {
                         Card cardPrev = card.getTasks().get(card.getTasks().indexOf(card1) - 1);
                         Element line = doc.createElementNS(svgNS, "line");
-                        line.setAttributeNS(null, "x1", Integer.toString((int) card1.getCenter().getX()/2));
-                        line.setAttributeNS(null, "x2", Integer.toString((int) cardPrev.getCenter().getX()/2));
-                        line.setAttributeNS(null, "y1", Integer.toString((int) card1.getCenter().getY()/2));
-                        line.setAttributeNS(null, "y2", Integer.toString((int) cardPrev.getCenter().getY()/2));
+                        line.setAttributeNS(null, "x1", Integer.toString((int) card1.getCenter().getX()));
+                        line.setAttributeNS(null, "x2", Integer.toString((int) cardPrev.getCenter().getX()));
+                        line.setAttributeNS(null, "y1", Integer.toString((int) card1.getCenter().getY()));
+                        line.setAttributeNS(null, "y2", Integer.toString((int) cardPrev.getCenter().getY()));
                         line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
                         svgRoot.appendChild(line);
                     }
@@ -399,7 +413,7 @@ public class Field implements Serializable {
 // attach the rectangle to the svg root element
 
 
-        DOMSource domSource = new DOMSource(doc);
+        /*DOMSource domSource = new DOMSource(doc);
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
         TransformerFactory tf = TransformerFactory.newInstance();
@@ -416,9 +430,32 @@ public class Field implements Serializable {
         //System.out.println("XML IN String format is: \n" + writer.toString());
         //System.out.println(Arrays.toString(Base64.getEncoder().encode(writer.toString().getBytes())));
 
-        setSvgImage(writer.toString().getBytes());
-    }
+        setSvgImage(writer.toString().getBytes());*/
 
+        try {
+
+
+            JPEGTranscoder t = new JPEGTranscoder();
+            t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, .8f);
+
+            // Set the transcoder input and output.
+            TranscoderInput input = new TranscoderInput(doc);
+            ByteArrayOutputStream a = new ByteArrayOutputStream();
+            TranscoderOutput output = new TranscoderOutput(a);
+            // Perform the transcoding.
+            t.transcode(input, output);
+            a.flush();
+            a.close();
+
+
+            setOrigImage(a.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TranscoderException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void checkInReverseOrder() {
 
