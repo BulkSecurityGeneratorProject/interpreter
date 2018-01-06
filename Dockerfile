@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM frolvlad/alpine-oraclejdk8:full
 ADD . /code/
 RUN echo '{ "allow_root": true }' > /root/.bowerrc && \
     rm -Rf /code/target /code/node_modules && \
@@ -6,7 +6,7 @@ RUN echo '{ "allow_root": true }' > /root/.bowerrc && \
     ./mvnw clean package -Pprod -DskipTests && \
     mv /code/target/*.war /app.war
 
-FROM openjdk:8-jre-alpine
+FROM frolvlad/alpine-oraclejdk8:full
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JHIPSTER_SLEEP=0 \
     JAVA_OPTS=""
