@@ -1,0 +1,76 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "field",
+            "otherEntityName": "field",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "tasks",
+            "otherEntityName": "card",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "subject"
+        },
+        {
+            "relationshipName": "subject",
+            "otherEntityName": "card",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "cardId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cardType",
+            "fieldType": "CardType",
+            "fieldValues": "TASK,TRANSFER,SUBJECT"
+        },
+        {
+            "fieldName": "x1",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "y1",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "x2",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "y2",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "x3",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "y3",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "x4",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "y4",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20180104124501",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "card",
+    "jpaMetamodelFiltering": true,
+    "pagination": "no"
+}

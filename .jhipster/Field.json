@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "card",
+            "otherEntityName": "card",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "field"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "origImage",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "svgImage",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "layoutType",
+            "fieldType": "LayoutType",
+            "fieldValues": "DEFAULT,STAR"
+        },
+        {
+            "fieldName": "resultImage",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        }
+    ],
+    "changelogDate": "20180104123831",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "field",
+    "jpaMetamodelFiltering": true,
+    "pagination": "no"
+}
