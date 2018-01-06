@@ -13,7 +13,7 @@ public interface CardMapper extends EntityMapper<CardDTO, Card> {
 
     @Mapping(source = "field.id", target = "fieldId")
     @Mapping(source = "subject.id", target = "subjectId")
-    CardDTO toDto(Card card); 
+    CardDTO toDto(Card card);
 
     @Mapping(source = "fieldId", target = "field")
     @Mapping(target = "tasks", ignore = true)
