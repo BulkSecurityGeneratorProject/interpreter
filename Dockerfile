@@ -1,6 +1,7 @@
 FROM frolvlad/alpine-oraclejdk8:full
 ADD . /code/
-RUN echo '{ "allow_root": true }' > /root/.bowerrc && \
+RUN apk add --no-cache libstdc++ && \
+    echo '{ "allow_root": true }' > /root/.bowerrc && \
     rm -Rf /code/target /code/node_modules && \
     cd /code/ && \
     ./mvnw clean package -Pprod -DskipTests && \
