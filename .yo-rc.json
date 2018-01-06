@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "at.meroff.bac"
     },
-    "jhipsterVersion": "4.13.1",
+    "jhipsterVersion": "4.13.2",
     "baseName": "interpreter",
     "packageName": "at.meroff.bac",
     "packageFolder": "at/meroff/bac",
