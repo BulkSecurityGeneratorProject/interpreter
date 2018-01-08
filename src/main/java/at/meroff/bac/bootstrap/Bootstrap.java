@@ -33,7 +33,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
-        for (int i = 0; i < 17; i++) {
+       /* for (int i = 0; i < 17; i++) {
 
             String format = String.format("%02d", i + 1);
 
@@ -55,7 +55,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
             fieldService.save(field01);
 
-        }
+        }*/
 
     }
 }
