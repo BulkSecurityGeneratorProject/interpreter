@@ -32,6 +32,11 @@
             "fieldName": "resultImage",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "xmlData",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
         }
     ],
     "changelogDate": "20180104123831",

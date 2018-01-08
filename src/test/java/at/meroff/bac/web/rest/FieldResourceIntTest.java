@@ -67,6 +67,11 @@ public class FieldResourceIntTest {
     private static final String DEFAULT_RESULT_IMAGE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_RESULT_IMAGE_CONTENT_TYPE = "image/png";
 
+    private static final byte[] DEFAULT_XML_DATA = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_XML_DATA = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_XML_DATA_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_XML_DATA_CONTENT_TYPE = "image/png";
+
     @Autowired
     private FieldRepository fieldRepository;
 
@@ -121,7 +126,9 @@ public class FieldResourceIntTest {
             .svgImageContentType(DEFAULT_SVG_IMAGE_CONTENT_TYPE)
             .layoutType(DEFAULT_LAYOUT_TYPE)
             .resultImage(DEFAULT_RESULT_IMAGE)
-            .resultImageContentType(DEFAULT_RESULT_IMAGE_CONTENT_TYPE);
+            .resultImageContentType(DEFAULT_RESULT_IMAGE_CONTENT_TYPE)
+            .xmlData(DEFAULT_XML_DATA)
+            .xmlDataContentType(DEFAULT_XML_DATA_CONTENT_TYPE);
         return field;
     }
 
@@ -154,6 +161,8 @@ public class FieldResourceIntTest {
         assertThat(testField.getLayoutType()).isEqualTo(DEFAULT_LAYOUT_TYPE);
         assertThat(testField.getResultImage()).isEqualTo(DEFAULT_RESULT_IMAGE);
         assertThat(testField.getResultImageContentType()).isEqualTo(DEFAULT_RESULT_IMAGE_CONTENT_TYPE);
+        assertThat(testField.getXmlData()).isEqualTo(DEFAULT_XML_DATA);
+        assertThat(testField.getXmlDataContentType()).isEqualTo(DEFAULT_XML_DATA_CONTENT_TYPE);
     }
 
     @Test
@@ -194,7 +203,9 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.[*].svgImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE))))
             .andExpect(jsonPath("$.[*].layoutType").value(hasItem(DEFAULT_LAYOUT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].resultImageContentType").value(hasItem(DEFAULT_RESULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].resultImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESULT_IMAGE))));
+            .andExpect(jsonPath("$.[*].resultImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESULT_IMAGE))))
+            .andExpect(jsonPath("$.[*].xmlDataContentType").value(hasItem(DEFAULT_XML_DATA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].xmlData").value(hasItem(Base64Utils.encodeToString(DEFAULT_XML_DATA))));
     }
 
     @Test
@@ -215,7 +226,9 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.svgImage").value(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE)))
             .andExpect(jsonPath("$.layoutType").value(DEFAULT_LAYOUT_TYPE.toString()))
             .andExpect(jsonPath("$.resultImageContentType").value(DEFAULT_RESULT_IMAGE_CONTENT_TYPE))
-            .andExpect(jsonPath("$.resultImage").value(Base64Utils.encodeToString(DEFAULT_RESULT_IMAGE)));
+            .andExpect(jsonPath("$.resultImage").value(Base64Utils.encodeToString(DEFAULT_RESULT_IMAGE)))
+            .andExpect(jsonPath("$.xmlDataContentType").value(DEFAULT_XML_DATA_CONTENT_TYPE))
+            .andExpect(jsonPath("$.xmlData").value(Base64Utils.encodeToString(DEFAULT_XML_DATA)));
     }
 
     @Test
@@ -329,7 +342,9 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.[*].svgImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_SVG_IMAGE))))
             .andExpect(jsonPath("$.[*].layoutType").value(hasItem(DEFAULT_LAYOUT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].resultImageContentType").value(hasItem(DEFAULT_RESULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].resultImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESULT_IMAGE))));
+            .andExpect(jsonPath("$.[*].resultImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESULT_IMAGE))))
+            .andExpect(jsonPath("$.[*].xmlDataContentType").value(hasItem(DEFAULT_XML_DATA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].xmlData").value(hasItem(Base64Utils.encodeToString(DEFAULT_XML_DATA))));
     }
 
     /**
@@ -371,7 +386,9 @@ public class FieldResourceIntTest {
             .svgImageContentType(UPDATED_SVG_IMAGE_CONTENT_TYPE)
             .layoutType(UPDATED_LAYOUT_TYPE)
             .resultImage(UPDATED_RESULT_IMAGE)
-            .resultImageContentType(UPDATED_RESULT_IMAGE_CONTENT_TYPE);
+            .resultImageContentType(UPDATED_RESULT_IMAGE_CONTENT_TYPE)
+            .xmlData(UPDATED_XML_DATA)
+            .xmlDataContentType(UPDATED_XML_DATA_CONTENT_TYPE);
         FieldDTO fieldDTO = fieldMapper.toDto(updatedField);
 
         restFieldMockMvc.perform(put("/api/fields")
@@ -391,6 +408,8 @@ public class FieldResourceIntTest {
         assertThat(testField.getLayoutType()).isEqualTo(UPDATED_LAYOUT_TYPE);
         assertThat(testField.getResultImage()).isEqualTo(UPDATED_RESULT_IMAGE);
         assertThat(testField.getResultImageContentType()).isEqualTo(UPDATED_RESULT_IMAGE_CONTENT_TYPE);
+        assertThat(testField.getXmlData()).isEqualTo(UPDATED_XML_DATA);
+        assertThat(testField.getXmlDataContentType()).isEqualTo(UPDATED_XML_DATA_CONTENT_TYPE);
     }
 
     @Test

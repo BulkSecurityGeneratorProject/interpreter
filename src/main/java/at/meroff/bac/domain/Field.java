@@ -81,6 +81,13 @@ public class Field implements Serializable {
     @Column(name = "result_image_content_type")
     private String resultImageContentType;
 
+    @Lob
+    @Column(name = "xml_data")
+    private byte[] xmlData;
+
+    @Column(name = "xml_data_content_type")
+    private String xmlDataContentType;
+
     @OneToMany(mappedBy = "field")
     //@JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -202,6 +209,32 @@ public class Field implements Serializable {
         this.resultImageContentType = resultImageContentType;
     }
 
+    public byte[] getXmlData() {
+        return xmlData;
+    }
+
+    public Field xmlData(byte[] xmlData) {
+        this.xmlData = xmlData;
+        return this;
+    }
+
+    public void setXmlData(byte[] xmlData) {
+        this.xmlData = xmlData;
+    }
+
+    public String getXmlDataContentType() {
+        return xmlDataContentType;
+    }
+
+    public Field xmlDataContentType(String xmlDataContentType) {
+        this.xmlDataContentType = xmlDataContentType;
+        return this;
+    }
+
+    public void setXmlDataContentType(String xmlDataContentType) {
+        this.xmlDataContentType = xmlDataContentType;
+    }
+
     public Set<Card> getCards() {
         return cards;
     }
@@ -260,6 +293,8 @@ public class Field implements Serializable {
             ", layoutType='" + getLayoutType() + "'" +
             ", resultImage='" + getResultImage() + "'" +
             ", resultImageContentType='" + getResultImageContentType() + "'" +
+            ", xmlData='" + getXmlData() + "'" +
+            ", xmlDataContentType='" + getXmlDataContentType() + "'" +
             "}";
     }
 

@@ -22,6 +22,7 @@
             <th><span>Svg Image</span></th>
             <th><span>Layout Type</span></th>
             <th><span>Result Image</span></th>
+            <th><span>Xml Data</span></th>
             <th></th>
             </tr>
             </thead>
@@ -45,6 +46,10 @@
                         <img [src]="'data:' + field.resultImageContentType + ';base64,' + field.resultImage" style="max-height: 30px;" alt="field image"/>
                     </a>
                     <span *ngIf="field.resultImage">{{field.resultImageContentType}}, {{byteSize(field.resultImage)}}</span>
+                </td>
+                <td>
+                    <a *ngIf="field.xmlData" (click)="openFile(field.xmlDataContentType, field.xmlData)">open</a>
+                    <span *ngIf="field.xmlData">{{field.xmlDataContentType}}, {{byteSize(field.xmlData)}}</span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
