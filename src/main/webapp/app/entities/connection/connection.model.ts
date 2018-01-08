@@ -15,6 +15,7 @@ export class Connection implements BaseEntity {
         public endPoint2Y?: number,
         public endPoint2Angle?: number,
         public directed2?: boolean,
+        public fieldId?: number,
     ) {
         this.directed1 = false;
         this.directed2 = false;

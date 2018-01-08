@@ -52,6 +52,12 @@
         <dd>
             <span>{{connection.directed2}}</span>
         </dd>
+        <dt><span>Field</span></dt>
+        <dd>
+            <div *ngIf="connection.fieldId">
+                <a [routerLink]="['/field', connection.fieldId]">{{connection.fieldId}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

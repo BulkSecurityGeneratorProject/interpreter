@@ -14,6 +14,7 @@ public interface FieldMapper extends EntityMapper<FieldDTO, Field> {
     FieldDTO toDto(Field field);
 
     @Mapping(target = "cards", ignore = true)
+    @Mapping(target = "connections", ignore = true)
     Field toEntity(FieldDTO fieldDTO);
 
     default Field fromId(Long id) {

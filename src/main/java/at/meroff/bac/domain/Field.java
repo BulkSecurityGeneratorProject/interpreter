@@ -93,6 +93,11 @@ public class Field implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Card> cards = new HashSet<>();
 
+    @OneToMany(mappedBy = "field")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Connection> connections = new HashSet<>();
+
     @Transient
     private Set<Pair<Card, Set<Pair<Card, Set<Pair<Card, Calculation>>>>>> preCalculatedValues;
 
@@ -258,6 +263,31 @@ public class Field implements Serializable {
 
     public void setCards(Set<Card> cards) {
         this.cards = cards;
+    }
+
+    public Set<Connection> getConnections() {
+        return connections;
+    }
+
+    public Field connections(Set<Connection> connections) {
+        this.connections = connections;
+        return this;
+    }
+
+    public Field addConnection(Connection connection) {
+        this.connections.add(connection);
+        connection.setField(this);
+        return this;
+    }
+
+    public Field removeConnection(Connection connection) {
+        this.connections.remove(connection);
+        connection.setField(null);
+        return this;
+    }
+
+    public void setConnections(Set<Connection> connections) {
+        this.connections = connections;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

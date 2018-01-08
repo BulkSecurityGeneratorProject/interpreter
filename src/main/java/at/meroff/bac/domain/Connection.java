@@ -58,6 +58,9 @@ public class Connection implements Serializable {
     @Column(name = "directed_2")
     private Boolean directed2;
 
+    @ManyToOne
+    private Field field;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -221,6 +224,19 @@ public class Connection implements Serializable {
 
     public void setDirected2(Boolean directed2) {
         this.directed2 = directed2;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public Connection field(Field field) {
+        this.field = field;
+        return this;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

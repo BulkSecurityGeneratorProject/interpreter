@@ -73,6 +73,13 @@
                 [(ngModel)]="connection.directed2" />
         </div>
 
+        <div class="form-group">
+            <label class="form-control-label" for="field_field">Field</label>
+            <select class="form-control" id="field_field" name="field" [(ngModel)]="connection.fieldId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="fieldOption.id" *ngFor="let fieldOption of fields; trackBy: trackFieldById">{{fieldOption.id}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

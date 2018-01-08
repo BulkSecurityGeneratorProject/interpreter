@@ -4,6 +4,7 @@ import at.meroff.bac.InterpreterApp;
 
 import at.meroff.bac.domain.Field;
 import at.meroff.bac.domain.Card;
+import at.meroff.bac.domain.Connection;
 import at.meroff.bac.repository.FieldRepository;
 import at.meroff.bac.service.FieldService;
 import at.meroff.bac.service.dto.FieldDTO;
@@ -325,6 +326,25 @@ public class FieldResourceIntTest {
 
         // Get all the fieldList where card equals to cardId + 1
         defaultFieldShouldNotBeFound("cardId.equals=" + (cardId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllFieldsByConnectionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Connection connection = ConnectionResourceIntTest.createEntity(em);
+        em.persist(connection);
+        em.flush();
+        field.addConnection(connection);
+        fieldRepository.saveAndFlush(field);
+        Long connectionId = connection.getId();
+
+        // Get all the fieldList where connection equals to connectionId
+        defaultFieldShouldBeFound("connectionId.equals=" + connectionId);
+
+        // Get all the fieldList where connection equals to connectionId + 1
+        defaultFieldShouldNotBeFound("connectionId.equals=" + (connectionId + 1));
     }
 
     /**

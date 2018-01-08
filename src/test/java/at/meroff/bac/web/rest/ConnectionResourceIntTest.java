@@ -3,6 +3,7 @@ package at.meroff.bac.web.rest;
 import at.meroff.bac.InterpreterApp;
 
 import at.meroff.bac.domain.Connection;
+import at.meroff.bac.domain.Field;
 import at.meroff.bac.repository.ConnectionRepository;
 import at.meroff.bac.service.ConnectionService;
 import at.meroff.bac.service.dto.ConnectionDTO;
@@ -794,6 +795,25 @@ public class ConnectionResourceIntTest {
         // Get all the connectionList where directed2 is null
         defaultConnectionShouldNotBeFound("directed2.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllConnectionsByFieldIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Field field = FieldResourceIntTest.createEntity(em);
+        em.persist(field);
+        em.flush();
+        connection.setField(field);
+        connectionRepository.saveAndFlush(connection);
+        Long fieldId = field.getId();
+
+        // Get all the connectionList where field equals to fieldId
+        defaultConnectionShouldBeFound("fieldId.equals=" + fieldId);
+
+        // Get all the connectionList where field equals to fieldId + 1
+        defaultConnectionShouldNotBeFound("fieldId.equals=" + (fieldId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned
      */

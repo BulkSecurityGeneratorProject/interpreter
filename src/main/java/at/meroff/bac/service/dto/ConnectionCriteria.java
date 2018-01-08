@@ -52,6 +52,8 @@ public class ConnectionCriteria implements Serializable {
 
     private BooleanFilter directed2;
 
+    private LongFilter fieldId;
+
     public ConnectionCriteria() {
     }
 
@@ -159,6 +161,14 @@ public class ConnectionCriteria implements Serializable {
         this.directed2 = directed2;
     }
 
+    public LongFilter getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(LongFilter fieldId) {
+        this.fieldId = fieldId;
+    }
+
     @Override
     public String toString() {
         return "ConnectionCriteria{" +
@@ -175,6 +185,7 @@ public class ConnectionCriteria implements Serializable {
                 (endPoint2Y != null ? "endPoint2Y=" + endPoint2Y + ", " : "") +
                 (endPoint2Angle != null ? "endPoint2Angle=" + endPoint2Angle + ", " : "") +
                 (directed2 != null ? "directed2=" + directed2 + ", " : "") +
+                (fieldId != null ? "fieldId=" + fieldId + ", " : "") +
             "}";
     }
 

@@ -8,6 +8,7 @@ import { InterpreterTestModule } from '../../../test.module';
 import { ConnectionDialogComponent } from '../../../../../../main/webapp/app/entities/connection/connection-dialog.component';
 import { ConnectionService } from '../../../../../../main/webapp/app/entities/connection/connection.service';
 import { Connection } from '../../../../../../main/webapp/app/entities/connection/connection.model';
+import { FieldService } from '../../../../../../main/webapp/app/entities/field';
 
 describe('Component Tests', () => {
 
@@ -23,6 +24,7 @@ describe('Component Tests', () => {
                 imports: [InterpreterTestModule],
                 declarations: [ConnectionDialogComponent],
                 providers: [
+                    FieldService,
                     ConnectionService
                 ]
             })

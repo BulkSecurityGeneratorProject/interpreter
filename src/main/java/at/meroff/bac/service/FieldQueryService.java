@@ -91,6 +91,9 @@ public class FieldQueryService extends QueryService<Field> {
             if (criteria.getCardId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCardId(), Field_.cards, Card_.id));
             }
+            if (criteria.getConnectionId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getConnectionId(), Field_.connections, Connection_.id));
+            }
         }
         return specification;
     }

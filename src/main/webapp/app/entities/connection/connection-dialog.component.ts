@@ -4,11 +4,13 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { Connection } from './connection.model';
 import { ConnectionPopupService } from './connection-popup.service';
 import { ConnectionService } from './connection.service';
+import { Field, FieldService } from '../field';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-connection-dialog',
@@ -19,15 +21,21 @@ export class ConnectionDialogComponent implements OnInit {
     connection: Connection;
     isSaving: boolean;
 
+    fields: Field[];
+
     constructor(
         public activeModal: NgbActiveModal,
+        private jhiAlertService: JhiAlertService,
         private connectionService: ConnectionService,
+        private fieldService: FieldService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.fieldService.query()
+            .subscribe((res: ResponseWrapper) => { this.fields = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -58,6 +66,14 @@ export class ConnectionDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackFieldById(index: number, item: Field) {
+        return item.id;
     }
 }
 

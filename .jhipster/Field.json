@@ -6,6 +6,12 @@
             "otherEntityName": "card",
             "relationshipType": "one-to-many",
             "otherEntityRelationshipName": "field"
+        },
+        {
+            "relationshipName": "connection",
+            "otherEntityName": "connection",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "field"
         }
     ],
     "fields": [

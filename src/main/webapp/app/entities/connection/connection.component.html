@@ -29,6 +29,7 @@
             <th><span>End Point 2 Y</span></th>
             <th><span>End Point 2 Angle</span></th>
             <th><span>Directed 2</span></th>
+            <th><span>Field</span></th>
             <th></th>
             </tr>
             </thead>
@@ -47,6 +48,11 @@
                 <td>{{connection.endPoint2Y}}</td>
                 <td>{{connection.endPoint2Angle}}</td>
                 <td>{{connection.directed2}}</td>
+                <td>
+                    <div *ngIf="connection.fieldId">
+                        <a [routerLink]="['../field', connection.fieldId  ]" >{{connection.fieldId}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

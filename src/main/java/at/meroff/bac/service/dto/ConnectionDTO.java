@@ -2,6 +2,8 @@ package at.meroff.bac.service.dto;
 
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -34,6 +36,8 @@ public class ConnectionDTO implements Serializable {
     private Double endPoint2Angle;
 
     private Boolean directed2;
+
+    private Long fieldId;
 
     public Long getId() {
         return id;
@@ -137,6 +141,14 @@ public class ConnectionDTO implements Serializable {
 
     public void setDirected2(Boolean directed2) {
         this.directed2 = directed2;
+    }
+
+    public Long getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(Long fieldId) {
+        this.fieldId = fieldId;
     }
 
     @Override

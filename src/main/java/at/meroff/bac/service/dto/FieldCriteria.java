@@ -41,6 +41,8 @@ public class FieldCriteria implements Serializable {
 
     private LongFilter cardId;
 
+    private LongFilter connectionId;
+
     public FieldCriteria() {
     }
 
@@ -76,6 +78,14 @@ public class FieldCriteria implements Serializable {
         this.cardId = cardId;
     }
 
+    public LongFilter getConnectionId() {
+        return connectionId;
+    }
+
+    public void setConnectionId(LongFilter connectionId) {
+        this.connectionId = connectionId;
+    }
+
     @Override
     public String toString() {
         return "FieldCriteria{" +
@@ -83,6 +93,7 @@ public class FieldCriteria implements Serializable {
                 (description != null ? "description=" + description + ", " : "") +
                 (layoutType != null ? "layoutType=" + layoutType + ", " : "") +
                 (cardId != null ? "cardId=" + cardId + ", " : "") +
+                (connectionId != null ? "connectionId=" + connectionId + ", " : "") +
             "}";
     }
 

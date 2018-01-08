@@ -114,6 +114,9 @@ public class ConnectionQueryService extends QueryService<Connection> {
             if (criteria.getDirected2() != null) {
                 specification = specification.and(buildSpecification(criteria.getDirected2(), Connection_.directed2));
             }
+            if (criteria.getFieldId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getFieldId(), Connection_.field, Field_.id));
+            }
         }
         return specification;
     }
