@@ -1,0 +1,70 @@
+
+<div *ngIf="connection">
+    <h2><span>Connection</span> {{connection.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Uuid</span></dt>
+        <dd>
+            <span>{{connection.uuid}}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{connection.name}}</span>
+        </dd>
+        <dt><span>End Point 1 Uuid</span></dt>
+        <dd>
+            <span>{{connection.endPoint1Uuid}}</span>
+        </dd>
+        <dt><span>End Point 1 X</span></dt>
+        <dd>
+            <span>{{connection.endPoint1X}}</span>
+        </dd>
+        <dt><span>End Point 1 Y</span></dt>
+        <dd>
+            <span>{{connection.endPoint1Y}}</span>
+        </dd>
+        <dt><span>End Point 1 Angle</span></dt>
+        <dd>
+            <span>{{connection.endPoint1Angle}}</span>
+        </dd>
+        <dt><span>Directed 1</span></dt>
+        <dd>
+            <span>{{connection.directed1}}</span>
+        </dd>
+        <dt><span>End Point 2 Uuid</span></dt>
+        <dd>
+            <span>{{connection.endPoint2Uuid}}</span>
+        </dd>
+        <dt><span>End Point 2 X</span></dt>
+        <dd>
+            <span>{{connection.endPoint2X}}</span>
+        </dd>
+        <dt><span>End Point 2 Y</span></dt>
+        <dd>
+            <span>{{connection.endPoint2Y}}</span>
+        </dd>
+        <dt><span>End Point 2 Angle</span></dt>
+        <dd>
+            <span>{{connection.endPoint2Angle}}</span>
+        </dd>
+        <dt><span>Directed 2</span></dt>
+        <dd>
+            <span>{{connection.directed2}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'connection/'+ connection.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
