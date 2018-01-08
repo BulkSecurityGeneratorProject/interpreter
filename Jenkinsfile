@@ -5,7 +5,7 @@ node {
         checkout scm
     }
 
-    docker.image(frolvlad/alpine-oraclejdk8:full').inside('-u root -e MAVEN_OPTS="-Duser.home=./"') {
+    docker.image('frolvlad/alpine-oraclejdk8:full').inside('-u root -e MAVEN_OPTS="-Duser.home=./"') {
         stage('check java') {
             sh "java -version"
         }
