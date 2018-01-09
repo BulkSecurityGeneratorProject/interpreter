@@ -16,7 +16,10 @@ export class Field implements BaseEntity {
         public layoutType?: LayoutType,
         public resultImageContentType?: string,
         public resultImage?: any,
+        public xmlDataContentType?: string,
+        public xmlData?: any,
         public cards?: BaseEntity[],
+        public connections?: BaseEntity[],
     ) {
     }
 }

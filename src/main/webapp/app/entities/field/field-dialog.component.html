@@ -76,6 +76,24 @@
             <input type="hidden" class="form-control" name="resultImageContentType" id="field_resultImageContentType"
                 [(ngModel)]="field.resultImageContentType" />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_xmlData">Xml Data</label>
+            <div>
+                <div *ngIf="field.xmlData" class="form-text text-danger clearfix">
+                    <a class="pull-left" (click)="openFile(field.xmlDataContentType, field.xmlData)">open</a><br>
+                    <span class="pull-left">{{field.xmlDataContentType}}, {{byteSize(field.xmlData)}}</span>
+                    <button type="button" (click)="field.xmlData=null;field.xmlDataContentType=null;"
+                            class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_xmlData" (change)="setFileData($event, field, 'xmlData', false)"/>
+            </div>
+            <input type="hidden" class="form-control" name="xmlData" id="field_xmlData"
+                [(ngModel)]="field.xmlData" />
+            <input type="hidden" class="form-control" name="xmlDataContentType" id="field_xmlDataContentType"
+                [(ngModel)]="field.xmlDataContentType" />
+        </div>
 
     </div>
     <div class="modal-footer">

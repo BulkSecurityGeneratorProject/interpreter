@@ -1,0 +1,86 @@
+<div>
+    <h2>
+        <span>Connections</span>
+        <button class="btn btn-primary float-right jh-create-entity create-connection" [routerLink]="['/', { outlets: { popup: ['connection-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Connection
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="connections">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Uuid</span></th>
+            <th><span>Name</span></th>
+            <th><span>End Point 1 Uuid</span></th>
+            <th><span>End Point 1 X</span></th>
+            <th><span>End Point 1 Y</span></th>
+            <th><span>End Point 1 Angle</span></th>
+            <th><span>Directed 1</span></th>
+            <th><span>End Point 2 Uuid</span></th>
+            <th><span>End Point 2 X</span></th>
+            <th><span>End Point 2 Y</span></th>
+            <th><span>End Point 2 Angle</span></th>
+            <th><span>Directed 2</span></th>
+            <th><span>Field</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let connection of connections ;trackBy: trackId">
+                <td><a [routerLink]="['../connection', connection.id ]">{{connection.id}}</a></td>
+                <td>{{connection.uuid}}</td>
+                <td>{{connection.name}}</td>
+                <td>{{connection.endPoint1Uuid}}</td>
+                <td>{{connection.endPoint1X}}</td>
+                <td>{{connection.endPoint1Y}}</td>
+                <td>{{connection.endPoint1Angle}}</td>
+                <td>{{connection.directed1}}</td>
+                <td>{{connection.endPoint2Uuid}}</td>
+                <td>{{connection.endPoint2X}}</td>
+                <td>{{connection.endPoint2Y}}</td>
+                <td>{{connection.endPoint2Angle}}</td>
+                <td>{{connection.directed2}}</td>
+                <td>
+                    <div *ngIf="connection.fieldId">
+                        <a [routerLink]="['../field', connection.fieldId  ]" >{{connection.fieldId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/connection', connection.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'connection/'+ connection.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'connection/'+ connection.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

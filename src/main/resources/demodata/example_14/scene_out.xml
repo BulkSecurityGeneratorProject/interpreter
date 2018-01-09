@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Elements>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>44</UUID>
+  <name></name>
+  <x>0.806425</x>
+  <y>0.165591</y>
+  <angle>0.190973</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>8</UUID>
+  <name></name>
+  <x>0.147346</x>
+  <y>0.215037</y>
+  <angle>3.11009</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>18</UUID>
+  <name></name>
+  <x>0.508456</x>
+  <y>0.221602</y>
+  <angle>3.09486</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>39</UUID>
+  <name></name>
+  <x>0.66182</x>
+  <y>0.387105</y>
+  <angle>0.199085</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>50</UUID>
+  <name></name>
+  <x>0.443854</x>
+  <y>0.393917</y>
+  <angle>6.14086</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>51</UUID>
+  <name></name>
+  <x>0.252006</x>
+  <y>0.480286</y>
+  <angle>6.27323</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>60</UUID>
+  <name></name>
+  <x>0.46659</x>
+  <y>0.60652</y>
+  <angle>0</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>38</UUID>
+  <name></name>
+  <x>0.767102</x>
+  <y>0.674363</y>
+  <angle>0.958713</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>17</UUID>
+  <name></name>
+  <x>0.198212</x>
+  <y>0.813309</y>
+  <angle>3.26645</angle>
+ </Element>
+ <Connection>
+  <UUID>11</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>18</UUID>
+   <name></name>
+   <x>0.508456</x>
+   <y>0.221602</y>
+   <angle>3.09486</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+   <UUID>50</UUID>
+   <name></name>
+   <x>0.443854</x>
+   <y>0.393917</y>
+   <angle>6.14086</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+</Elements>

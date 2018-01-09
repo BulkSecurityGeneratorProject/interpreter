@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Elements>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>14</UUID>
+  <name></name>
+  <x>0.806869</x>
+  <y>0.164654</y>
+  <angle>6.17241</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>42</UUID>
+  <name></name>
+  <x>0.490306</x>
+  <y>0.169217</y>
+  <angle>6.27456</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>18</UUID>
+  <name></name>
+  <x>0.649951</x>
+  <y>0.168885</y>
+  <angle>6.1772</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>50</UUID>
+  <name></name>
+  <x>0.122195</x>
+  <y>0.177156</y>
+  <angle>0.139822</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>9</UUID>
+  <name></name>
+  <x>0.308903</x>
+  <y>0.183104</y>
+  <angle>0</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+  <UUID>1</UUID>
+  <name></name>
+  <x>0.604499</x>
+  <y>0.307178</y>
+  <angle>6.21563</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+  <UUID>16</UUID>
+  <name></name>
+  <x>0.34945</x>
+  <y>0.3176</y>
+  <angle>0</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>17</UUID>
+  <name></name>
+  <x>0.0862249</x>
+  <y>0.471007</y>
+  <angle>0.124063</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>3</UUID>
+  <name></name>
+  <x>0.446893</x>
+  <y>0.473865</y>
+  <angle>0</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>39</UUID>
+  <name></name>
+  <x>0.667077</x>
+  <y>0.477663</y>
+  <angle>6.2675</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>45</UUID>
+  <name></name>
+  <x>0.290653</x>
+  <y>0.477021</y>
+  <angle>0.0926395</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>41</UUID>
+  <name></name>
+  <x>0.84796</x>
+  <y>0.481525</y>
+  <angle>6.18525</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+  <UUID>28</UUID>
+  <name></name>
+  <x>0.564776</x>
+  <y>0.636864</y>
+  <angle>6.27095</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>38</UUID>
+  <name></name>
+  <x>0.0451743</x>
+  <y>0.804674</y>
+  <angle>0.120034</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>15</UUID>
+  <name></name>
+  <x>0.274271</x>
+  <y>0.809998</y>
+  <angle>0.0820749</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>60</UUID>
+  <name></name>
+  <x>0.699822</x>
+  <y>0.808876</y>
+  <angle>6.21137</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+  <UUID>33</UUID>
+  <name></name>
+  <x>0.48917</x>
+  <y>0.810018</y>
+  <angle>0</angle>
+ </Element>
+ <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+  <UUID>44</UUID>
+  <name></name>
+  <x>0.874608</x>
+  <y>0.815165</y>
+  <angle>6.14773</angle>
+ </Element>
+ <Connection>
+  <UUID>3</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>1</UUID>
+   <name></name>
+   <x>1.20906</x>
+   <y>0.615036</y>
+   <angle>6.22699</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>42</UUID>
+   <name></name>
+   <x>0.981023</x>
+   <y>0.339093</y>
+   <angle>6.27473</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>5</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>1</UUID>
+   <name></name>
+   <x>1.20906</x>
+   <y>0.615036</y>
+   <angle>6.22699</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>18</UUID>
+   <name></name>
+   <x>1.30029</x>
+   <y>0.3386</y>
+   <angle>6.19833</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>6</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>16</UUID>
+   <name></name>
+   <x>0.699087</x>
+   <y>0.635577</y>
+   <angle>0.0649843</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>9</UUID>
+   <name></name>
+   <x>0.618107</x>
+   <y>0.367124</y>
+   <angle>0</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>9</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>16</UUID>
+   <name></name>
+   <x>0.699087</x>
+   <y>0.635577</y>
+   <angle>0.0649843</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>3</UUID>
+   <name></name>
+   <x>0.894338</x>
+   <y>0.94844</y>
+   <angle>0</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>10</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>16</UUID>
+   <name></name>
+   <x>0.699087</x>
+   <y>0.635577</y>
+   <angle>0.0649843</angle>
+  </endPoint1>
+  <directed1>true</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>3</UUID>
+   <name></name>
+   <x>0.894338</x>
+   <y>0.94844</y>
+   <angle>0</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>11</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>1</UUID>
+   <name></name>
+   <x>1.20906</x>
+   <y>0.615036</y>
+   <angle>6.22699</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>3</UUID>
+   <name></name>
+   <x>0.894338</x>
+   <y>0.94844</y>
+   <angle>0</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>12</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>28</UUID>
+   <name></name>
+   <x>1.13005</x>
+   <y>1.27451</y>
+   <angle>6.26332</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>3</UUID>
+   <name></name>
+   <x>0.894338</x>
+   <y>0.94844</y>
+   <angle>0</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>14</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>28</UUID>
+   <name></name>
+   <x>1.13005</x>
+   <y>1.27451</y>
+   <angle>6.26332</angle>
+  </endPoint1>
+  <directed1>true</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>33</UUID>
+   <name></name>
+   <x>0.978775</x>
+   <y>1.62077</y>
+   <angle>6.2815</angle>
+  </endPoint2>
+  <directed2>true</directed2>
+ </Connection>
+ <Connection>
+  <UUID>15</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>28</UUID>
+   <name></name>
+   <x>1.13005</x>
+   <y>1.27451</y>
+   <angle>6.26332</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>60</UUID>
+   <name></name>
+   <x>1.40028</x>
+   <y>1.61833</y>
+   <angle>6.20362</angle>
+  </endPoint2>
+  <directed2>true</directed2>
+ </Connection>
+ <Connection>
+  <UUID>23</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>1</UUID>
+   <name></name>
+   <x>1.20906</x>
+   <y>0.615036</y>
+   <angle>6.22699</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+   <UUID>14</UUID>
+   <name></name>
+   <x>1.61384</x>
+   <y>0.330069</y>
+   <angle>6.18056</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>24</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>1</UUID>
+   <name></name>
+   <x>1.20906</x>
+   <y>0.615036</y>
+   <angle>6.22699</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>18</UUID>
+   <name></name>
+   <x>1.30029</x>
+   <y>0.3386</y>
+   <angle>6.19833</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>26</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>16</UUID>
+   <name></name>
+   <x>0.699087</x>
+   <y>0.635577</y>
+   <angle>0.0649843</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>9</UUID>
+   <name></name>
+   <x>0.618107</x>
+   <y>0.367124</y>
+   <angle>0</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>37</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>3</UUID>
+   <name></name>
+   <x>0.894338</x>
+   <y>0.94844</y>
+   <angle>0</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>45</UUID>
+   <name></name>
+   <x>0.58174</x>
+   <y>0.954551</y>
+   <angle>0.0937128</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>40</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlYellowElement">
+   <UUID>28</UUID>
+   <name></name>
+   <x>1.13005</x>
+   <y>1.27451</y>
+   <angle>6.26332</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>33</UUID>
+   <name></name>
+   <x>0.978775</x>
+   <y>1.62077</y>
+   <angle>6.2815</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+ <Connection>
+  <UUID>51</UUID>
+  <name></name>
+  <endPoint1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlBlueElement">
+   <UUID>44</UUID>
+   <name></name>
+   <x>1.74982</x>
+   <y>1.63109</y>
+   <angle>6.14413</angle>
+  </endPoint1>
+  <directed1>false</directed1>
+  <endPoint2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="XmlRedElement">
+   <UUID>60</UUID>
+   <name></name>
+   <x>1.40028</x>
+   <y>1.61833</y>
+   <angle>6.20362</angle>
+  </endPoint2>
+  <directed2>false</directed2>
+ </Connection>
+</Elements>

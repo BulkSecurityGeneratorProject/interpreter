@@ -81,10 +81,22 @@ public class Field implements Serializable {
     @Column(name = "result_image_content_type")
     private String resultImageContentType;
 
+    @Lob
+    @Column(name = "xml_data")
+    private byte[] xmlData;
+
+    @Column(name = "xml_data_content_type")
+    private String xmlDataContentType;
+
     @OneToMany(mappedBy = "field")
     //@JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Card> cards = new HashSet<>();
+
+    @OneToMany(mappedBy = "field")
+    //@JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Connection> connections = new HashSet<>();
 
     @Transient
     private Set<Pair<Card, Set<Pair<Card, Set<Pair<Card, Calculation>>>>>> preCalculatedValues;
@@ -202,6 +214,32 @@ public class Field implements Serializable {
         this.resultImageContentType = resultImageContentType;
     }
 
+    public byte[] getXmlData() {
+        return xmlData;
+    }
+
+    public Field xmlData(byte[] xmlData) {
+        this.xmlData = xmlData;
+        return this;
+    }
+
+    public void setXmlData(byte[] xmlData) {
+        this.xmlData = xmlData;
+    }
+
+    public String getXmlDataContentType() {
+        return xmlDataContentType;
+    }
+
+    public Field xmlDataContentType(String xmlDataContentType) {
+        this.xmlDataContentType = xmlDataContentType;
+        return this;
+    }
+
+    public void setXmlDataContentType(String xmlDataContentType) {
+        this.xmlDataContentType = xmlDataContentType;
+    }
+
     public Set<Card> getCards() {
         return cards;
     }
@@ -225,6 +263,31 @@ public class Field implements Serializable {
 
     public void setCards(Set<Card> cards) {
         this.cards = cards;
+    }
+
+    public Set<Connection> getConnections() {
+        return connections;
+    }
+
+    public Field connections(Set<Connection> connections) {
+        this.connections = connections;
+        return this;
+    }
+
+    public Field addConnection(Connection connection) {
+        this.connections.add(connection);
+        connection.setField(this);
+        return this;
+    }
+
+    public Field removeConnection(Connection connection) {
+        this.connections.remove(connection);
+        connection.setField(null);
+        return this;
+    }
+
+    public void setConnections(Set<Connection> connections) {
+        this.connections = connections;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -260,6 +323,8 @@ public class Field implements Serializable {
             ", layoutType='" + getLayoutType() + "'" +
             ", resultImage='" + getResultImage() + "'" +
             ", resultImageContentType='" + getResultImageContentType() + "'" +
+            ", xmlData='" + getXmlData() + "'" +
+            ", xmlDataContentType='" + getXmlDataContentType() + "'" +
             "}";
     }
 
@@ -445,6 +510,25 @@ public class Field implements Serializable {
 
 
             });
+
+        BufferedImage finalImage = image;
+        System.out.println(image.getWidth());
+        System.out.println(image.getHeight());
+        connections.forEach(connection -> {
+            Element line = doc.createElementNS(svgNS, "line");
+            int i1 = (int) (finalImage.getWidth() * connection.getEndPoint1X());
+            int i2 = (int) (finalImage.getHeight() * connection.getEndPoint1Y());
+            int i3 = (int) (finalImage.getWidth() * connection.getEndPoint2X());
+            int i4 = (int) (finalImage.getHeight() * connection.getEndPoint2Y());
+
+            System.out.println(i1 + " | " + i2 + "  --  " + i3 + " | " + i4);
+            line.setAttributeNS(null, "x1", Integer.toString((int)(finalImage.getWidth() * connection.getEndPoint1X())));
+            line.setAttributeNS(null, "x2", Integer.toString((int)(finalImage.getWidth() * connection.getEndPoint2X())));
+            line.setAttributeNS(null, "y1", Integer.toString((int)(finalImage.getHeight() * connection.getEndPoint1Y())));
+            line.setAttributeNS(null, "y2", Integer.toString((int)(finalImage.getHeight() * connection.getEndPoint2Y())));
+            line.setAttributeNS(null, "style", "stroke:rgb(150,0,150);stroke-width:5");
+            svgRoot.appendChild(line);
+        });
 
         try {
 

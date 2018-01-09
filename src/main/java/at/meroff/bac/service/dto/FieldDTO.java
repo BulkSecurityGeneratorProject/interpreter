@@ -31,6 +31,10 @@ public class FieldDTO implements Serializable {
     private byte[] resultImage;
     private String resultImageContentType;
 
+    @Lob
+    private byte[] xmlData;
+    private String xmlDataContentType;
+
     private Set<CardDTO> cards;
 
     public Long getId() {
@@ -105,6 +109,22 @@ public class FieldDTO implements Serializable {
         this.resultImageContentType = resultImageContentType;
     }
 
+    public byte[] getXmlData() {
+        return xmlData;
+    }
+
+    public void setXmlData(byte[] xmlData) {
+        this.xmlData = xmlData;
+    }
+
+    public String getXmlDataContentType() {
+        return xmlDataContentType;
+    }
+
+    public void setXmlDataContentType(String xmlDataContentType) {
+        this.xmlDataContentType = xmlDataContentType;
+    }
+
     public Set<CardDTO> getCards() {
         return cards;
     }
@@ -143,6 +163,7 @@ public class FieldDTO implements Serializable {
             ", svgImage='" + getSvgImage() + "'" +
             ", layoutType='" + getLayoutType() + "'" +
             ", resultImage='" + getResultImage() + "'" +
+            ", xmlData='" + getXmlData() + "'" +
             "}";
     }
 }

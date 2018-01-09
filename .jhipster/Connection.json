@@ -1,0 +1,67 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "field",
+            "otherEntityName": "field",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "uuid",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "endPoint1Uuid",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "endPoint1X",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "endPoint1Y",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "endPoint1Angle",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "directed1",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "endPoint2Uuid",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "endPoint2X",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "endPoint2Y",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "endPoint2Angle",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "directed2",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180108225538",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "connection",
+    "jpaMetamodelFiltering": true,
+    "pagination": "no"
+}

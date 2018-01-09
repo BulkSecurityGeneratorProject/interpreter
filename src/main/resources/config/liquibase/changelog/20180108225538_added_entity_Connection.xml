@@ -15,46 +15,62 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Field.
+        Added the entity Connection.
     -->
-    <changeSet id="20180104123831-1" author="jhipster">
-        <createTable tableName="field">
+    <changeSet id="20180108225538-1" author="jhipster">
+        <createTable tableName="connection">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="description" type="varchar(255)">
+            <column name="uuid" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="orig_image" type="longblob">
-                <constraints nullable="true" />
-            </column>
-            <column name="orig_image_content_type" type="varchar(255)">
+            <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="svg_image" type="longblob">
-                <constraints nullable="true" />
-            </column>
-            <column name="svg_image_content_type" type="varchar(255)">
+            <column name="end_point_1_uuid" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="layout_type" type="varchar(255)">
+            <column name="end_point_1_x" type="double">
                 <constraints nullable="true" />
             </column>
 
-            <column name="result_image" type="longblob">
-                <constraints nullable="true" />
-            </column>
-            <column name="result_image_content_type" type="varchar(255)">
+            <column name="end_point_1_y" type="double">
                 <constraints nullable="true" />
             </column>
 
-            <column name="xml_data" type="longblob">
+            <column name="end_point_1_angle" type="double">
                 <constraints nullable="true" />
             </column>
-            <column name="xml_data_content_type" type="varchar(255)">
+
+            <column name="directed_1" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_point_2_uuid" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_point_2_x" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_point_2_y" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_point_2_angle" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="directed_2" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="field_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

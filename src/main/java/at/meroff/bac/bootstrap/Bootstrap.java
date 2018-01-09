@@ -42,16 +42,18 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
             Resource resourceJpeg = resourceLoader.getResource("classpath:demodata/example_"+ format + "/scene_out.jpg");
             Resource resourceSvg = resourceLoader.getResource("classpath:demodata/example_"+ format + "/scene_out.svg");
-
+            Resource resourceXML = resourceLoader.getResource("classpath:demodata/example_"+ format + "/scene_out.xml");
             try {
                 field01.setOrigImage(IOUtils.toByteArray(resourceJpeg.getInputStream()));
                 field01.setSvgImage(IOUtils.toByteArray(resourceSvg.getInputStream()));
+                field01.setXmlData(IOUtils.toByteArray(resourceXML.getInputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             field01.setSvgImageContentType("image/svg+xml");
             field01.setOrigImageContentType("image/jpeg");
+            field01.setXmlDataContentType("text/xml");
 
             fieldService.save(field01);
 
