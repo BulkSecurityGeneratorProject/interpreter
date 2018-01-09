@@ -44,6 +44,9 @@ const ENTITY_STATES = [
         ConnectionService,
         ConnectionPopupService,
     ],
+    exports: [
+        ConnectionComponent
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class InterpreterConnectionModule {}

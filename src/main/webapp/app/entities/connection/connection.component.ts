@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
@@ -14,6 +14,7 @@ export class ConnectionComponent implements OnInit, OnDestroy {
 connections: Connection[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    @Input() fieldId;
 
     constructor(
         private connectionService: ConnectionService,
@@ -24,12 +25,21 @@ connections: Connection[];
     }
 
     loadAll() {
-        this.connectionService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.connections = res.json;
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+        if (!this.fieldId) {
+            this.connectionService.query().subscribe(
+                (res: ResponseWrapper) => {
+                    this.connections = res.json;
+                },
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
+        } else {
+            this.connectionService.queryByField_Id(this.fieldId).subscribe(
+                (res: ResponseWrapper) => {
+                    this.connections = res.json;
+                },
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
+        }
     }
     ngOnInit() {
         this.loadAll();

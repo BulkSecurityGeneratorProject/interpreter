@@ -79,4 +79,17 @@ public class ConnectionService {
         log.debug("Request to delete Connection : {}", id);
         connectionRepository.delete(id);
     }
+
+    /**
+     * Get all the cards.
+     *
+     * @return the list of entities by field id
+     */
+    @Transactional(readOnly = true)
+    public List<ConnectionDTO> findByField_Id(Long fieldId) {
+        log.debug("Request to get all Cards by Field Id: {}", fieldId);
+        return connectionRepository.findByField_Id(fieldId).stream()
+            .map(connectionMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 }

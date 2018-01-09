@@ -10,6 +10,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class ConnectionService {
 
     private resourceUrl =  SERVER_API_URL + 'api/connections';
+    private resourceUrlByFieldId =  SERVER_API_URL + 'api/connections/byfieldid';
 
     constructor(private http: Http) { }
 
@@ -69,5 +70,10 @@ export class ConnectionService {
     private convert(connection: Connection): Connection {
         const copy: Connection = Object.assign({}, connection);
         return copy;
+    }
+
+    queryByField_Id(fieldId?: number): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrlByFieldId}/${fieldId}`)
+            .map((res: Response) => this.convertResponse(res));
     }
 }

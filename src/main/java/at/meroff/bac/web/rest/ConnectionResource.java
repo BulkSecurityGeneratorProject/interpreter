@@ -122,4 +122,18 @@ public class ConnectionResource {
         connectionService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * GET  /cards : get all the cards.
+     *
+     * @param fieldId the field id
+     * @return the ResponseEntity with status 200 (OK) and the list of cards in body
+     */
+    @GetMapping("/connections/byfieldid/{fieldId}")
+    @Timed
+    public ResponseEntity<List<ConnectionDTO>> getAllConnectionsByField_Id(@PathVariable Long fieldId) {
+        log.debug("REST request to get Connections by Field Id: {}", fieldId);
+        List<ConnectionDTO> entityList = connectionService.findByField_Id(fieldId);
+        return ResponseEntity.ok().body(entityList);
+    }
 }

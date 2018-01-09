@@ -15,6 +15,7 @@ import {
     fieldPopupRoute,
 } from './';
 import {InterpreterCardModule} from '../card/card.module';
+import {InterpreterConnectionModule} from '../connection/connection.module';
 
 const ENTITY_STATES = [
     ...fieldRoute,
@@ -25,6 +26,7 @@ const ENTITY_STATES = [
     imports: [
         InterpreterSharedModule,
         InterpreterCardModule,
+        InterpreterConnectionModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [
