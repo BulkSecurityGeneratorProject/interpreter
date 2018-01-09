@@ -15,7 +15,7 @@ export class FieldDetailComponent implements OnInit, OnDestroy {
     field: Field;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
-    private fieldId: number;
+    fieldId: number;
 
     constructor(
         private eventManager: JhiEventManager,
