@@ -109,10 +109,6 @@ public class FieldService {
                     }
                 }
 
-                field.findRelations();
-
-                cardRepository.save(field.getCards());
-
             } catch (ParserConfigurationException | IOException | SAXException e) {
                 e.printStackTrace();
             }
@@ -188,14 +184,17 @@ public class FieldService {
 
 
                     }
-
-                    connection.setField(field);
                     connection = connectionRepository.save(connection);
                     field.addConnection(connection);
 
-
+                    connectionRepository.save(field.getConnections());
 
                 }
+
+                field.findRelations();
+
+                cardRepository.save(field.getCards());
+                connectionRepository.save(field.getConnections());
 
             } catch (ParserConfigurationException | IOException | SAXException e) {
                 e.printStackTrace();

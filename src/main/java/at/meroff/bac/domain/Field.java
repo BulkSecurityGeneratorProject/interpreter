@@ -94,7 +94,7 @@ public class Field implements Serializable {
     private Set<Card> cards = new HashSet<>();
 
     @OneToMany(mappedBy = "field")
-    @JsonIgnore
+    //@JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Connection> connections = new HashSet<>();
 
@@ -510,6 +510,25 @@ public class Field implements Serializable {
 
 
             });
+
+        BufferedImage finalImage = image;
+        System.out.println(image.getWidth());
+        System.out.println(image.getHeight());
+        connections.forEach(connection -> {
+            Element line = doc.createElementNS(svgNS, "line");
+            int i1 = (int) (finalImage.getWidth() * connection.getEndPoint1X());
+            int i2 = (int) (finalImage.getHeight() * connection.getEndPoint1Y());
+            int i3 = (int) (finalImage.getWidth() * connection.getEndPoint2X());
+            int i4 = (int) (finalImage.getHeight() * connection.getEndPoint2Y());
+
+            System.out.println(i1 + " | " + i2 + "  --  " + i3 + " | " + i4);
+            line.setAttributeNS(null, "x1", Integer.toString((int)(finalImage.getWidth() * connection.getEndPoint1X())));
+            line.setAttributeNS(null, "x2", Integer.toString((int)(finalImage.getWidth() * connection.getEndPoint2X())));
+            line.setAttributeNS(null, "y1", Integer.toString((int)(finalImage.getHeight() * connection.getEndPoint1Y())));
+            line.setAttributeNS(null, "y2", Integer.toString((int)(finalImage.getHeight() * connection.getEndPoint2Y())));
+            line.setAttributeNS(null, "style", "stroke:rgb(150,0,150);stroke-width:5");
+            svgRoot.appendChild(line);
+        });
 
         try {
 
