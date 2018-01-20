@@ -35,7 +35,7 @@ public class Statistics
         return Math.sqrt(getVariance());
     }
 
-    public double bbb() {
+    public double variationCoefficient() {
         double stdDev = getStdDev();
         double mean = getMean();
         return stdDev / mean;

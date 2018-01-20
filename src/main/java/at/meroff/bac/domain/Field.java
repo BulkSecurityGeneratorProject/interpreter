@@ -5,33 +5,22 @@ import at.meroff.bac.helper.Calculation;
 import at.meroff.bac.helper.Statistics;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.imageio.plugins.jpeg.JPEG;
 import javafx.util.Pair;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.apache.batik.transcoder.*;
-import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
-import org.apache.batik.transcoder.image.PNGTranscoder;
-import org.apache.xml.security.utils.XMLUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.imageio.ImageIO;
 import javax.persistence.*;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import at.meroff.bac.domain.enumeration.LayoutType;
 import org.w3c.dom.DOMImplementation;
@@ -47,6 +36,7 @@ import org.w3c.dom.Element;
 public class Field implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final double THRESHOLD_FOR_STARLAYOUT = 0.3;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,9 +87,6 @@ public class Field implements Serializable {
     //@JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Connection> connections = new HashSet<>();
-
-    @Transient
-    private Set<Pair<Card, Set<Pair<Card, Set<Pair<Card, Calculation>>>>>> preCalculatedValues;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -329,18 +316,33 @@ public class Field implements Serializable {
     }
 
     public void findRelations() {
-        if (checkForStarLayout()) {
+        if (calculateStarLayout()) {
             setLayoutType(LayoutType.STAR);
         } else {
             setLayoutType(LayoutType.DEFAULT);
 
-            // Reset task assignment
+            // Reset task assignment --> calculate default layout
             getCards().forEach(card -> card.setSubject(null));
             getCards().forEach(card -> card.getTasks().clear());
         }
 
-        preCalculateValues();
+        initialDefaultLayoutCalculation();
 
+        reassignTasksIfEmptySubjectExists();
+
+        // TODO was ist mit nicht zugeordneten Tasks
+
+        for (int i = 0; i < 100; i++) {
+            checkInReverseOrder();
+        }
+
+        // create image
+
+        createImage();
+
+    }
+
+    private void initialDefaultLayoutCalculation() {
         while (hasNotProceededSubjects() && hasNotProceededTasks()) {
             Pair<Card, Card> firstSubjectTaskRelation = findFirstSubjectTaskRelation();
 
@@ -349,7 +351,7 @@ public class Field implements Serializable {
                 Set<Pair<Card, Calculation>> followUpTasks = findFollowUpTask(firstSubjectTaskRelation);
                 followUpTasks = followUpTasks.stream()
                     //.filter(taskCalculationPair -> savedTasks.get(savedTasks.indexOf(taskCalculationPair.getKey())).getSubject() == null)
-                    .filter(taskCalculationPair -> cards.stream().filter(card -> card.getCardType().equals(CardType.TASK)).filter(card -> Objects.isNull(card.getSubject())).count()>0)
+                    .filter(taskCalculationPair -> getTaskStream().filter(card -> Objects.isNull(card.getSubject())).count()>0)
                     .filter(taskCalculationPair -> Objects.isNull(taskCalculationPair.getKey().getSubject()))
                     //.filter(taskCalculationPair -> taskCalculationPair.getKey().proceeded == false)
                     .collect(Collectors.toSet());
@@ -380,29 +382,9 @@ public class Field implements Serializable {
                 }
             }
         }
+    }
 
-        if (cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).filter(card -> card.getTasks().size() == 0).count() > 0) {
-            // there are subjects without assigned tasks
-            System.out.println("Fixing Subjects");
-
-            // reassign tasks for unused subjects
-            cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).filter(card -> card.getTasks().size() == 0)
-                .forEach(subject -> {
-                    Card closestTask = findClosestTask(subject);
-                    closestTask.getSubject().removeTasks(closestTask);
-                    subject.addTasks(closestTask);
-                    closestTask.setSubject(subject);
-                });
-        }
-
-        // TODO was ist mit nicht zugeordneten Tasks
-
-        for (int i = 0; i < 100; i++) {
-            checkInReverseOrder();
-        }
-
-        // create image
-
+    private void createImage() {
         DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
         String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
         Document doc = impl.createDocument(svgNS, "svg", null);
@@ -425,7 +407,7 @@ public class Field implements Serializable {
 // create the rectangle
 
 
-        cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT))
+        getSubjectStream()
             .forEach(card -> {
                 Element rectangle = doc.createElementNS(svgNS, "rect");
 
@@ -445,7 +427,7 @@ public class Field implements Serializable {
 
             });
 
-        cards.stream().filter(card -> card.getCardType().equals(CardType.TASK))
+        getTaskStream()
             .forEach(card -> {
                 Element rectangle = doc.createElementNS(svgNS, "rect");
 
@@ -465,7 +447,7 @@ public class Field implements Serializable {
                 svgRoot.appendChild(text);
             });
 
-        cards.stream().filter(card -> card.getCardType().equals(CardType.TRANSFER))
+        getTransferStream()
             .forEach(card -> {
                 Element rectangle = doc.createElementNS(svgNS, "rect");
 
@@ -484,7 +466,7 @@ public class Field implements Serializable {
                 svgRoot.appendChild(text);
             });
 
-        cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT))
+        getSubjectStream()
             .forEach(card -> {
                 // <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
                 for (Card card1 : card.getTasks()) {
@@ -551,16 +533,31 @@ public class Field implements Serializable {
         } catch (IOException | TranscoderException e) {
             e.printStackTrace();
         }
+    }
 
+    private void reassignTasksIfEmptySubjectExists() {
+        if (getSubjectStream().filter(card -> card.getTasks().size() == 0).count() > 0) {
+            // there are subjects without assigned tasks
+            System.out.println("Fixing Subjects");
+
+            // reassign tasks for unused subjects
+            getSubjectStream().filter(card -> card.getTasks().size() == 0)
+                .forEach(subject -> {
+                    Card closestTask = findClosestTask(subject);
+                    closestTask.getSubject().removeTasks(closestTask);
+                    subject.addTasks(closestTask);
+                    closestTask.setSubject(subject);
+                });
+        }
     }
 
     private void checkInReverseOrder() {
 
         //if (savedSubjects.size() >= savedTasks.size()) return;
 
-        if (cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).count() >= cards.stream().filter(card -> card.getCardType().equals(CardType.TASK)).count()) return;
+        if (getSubjectStream().count() >= getTaskStream().count()) return;
 
-        cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT))
+        getSubjectStream()
             .forEach(subject -> {
                 Set<Pair<Card, Calculation>> followUpTasks = findFollowUpTask(new Pair<>(subject, subject.getTasks().get(subject.getTasks().size() - 1)));
 
@@ -609,8 +606,7 @@ public class Field implements Serializable {
     }
 
     private Card findClosestTask(Card subject) {
-        return cards.stream()
-            .filter(card -> card.getCardType().equals(CardType.TASK))
+        return getTaskStream()
             .map(task -> new Pair<>(task, Card.getDistance(subject, task)))
             .min(Comparator.comparingDouble(Pair::getValue))
             .map(Pair::getKey)
@@ -620,7 +616,7 @@ public class Field implements Serializable {
     private boolean checkForIntersectionWithSubject(Card baseSubject, Card task) {
         Line2D inter = new Line2D.Double(baseSubject.getCenter().x, baseSubject.getCenter().y, task.getCenter().x, task.getCenter().y);
 
-        for (Card subject : cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).collect(Collectors.toSet())) {
+        for (Card subject : getSubjectStream().collect(Collectors.toSet())) {
             if (!subject.equals(baseSubject)) {
                 Line2D l1 = new Line2D.Double(subject.getx1(), subject.gety1(), subject.getx2(), subject.gety2());
                 Line2D l2 = new Line2D.Double(subject.getx2(), subject.gety2(), subject.getx3(), subject.gety3());
@@ -637,7 +633,7 @@ public class Field implements Serializable {
     }
 
     private Set<Pair<Card, Calculation>> findFollowUpTask(Pair<Card, Card> subjectTaskRelation) {
-        return preCalculatedValues.stream()
+        return preCalculateValues().stream()
             .filter(subjectSetPair -> subjectSetPair.getKey().equals(subjectTaskRelation.getKey()))
             .map(subjectSetPair -> {
                 return subjectSetPair
@@ -653,8 +649,8 @@ public class Field implements Serializable {
     }
 
     private Pair<Card,Card> findFirstSubjectTaskRelation() {
-        return cards.stream().filter(card -> card.getCardType().equals(CardType.SUBJECT)).filter(card -> card.getTasks().size() == 0)
-            .map(subject -> new Pair<>(subject,cards.stream().filter(card -> card.getCardType().equals(CardType.TASK)).filter(card -> Objects.isNull(card.getSubject()))
+        return getSubjectStream().filter(card -> card.getTasks().size() == 0)
+            .map(subject -> new Pair<>(subject, getTaskStream().filter(card -> Objects.isNull(card.getSubject()))
                 .map(task -> new Pair<>(task,Card.getDistance(subject, task)))
                 .min(Comparator.comparingDouble(Pair::getValue))
                 .orElseThrow(() -> new IllegalStateException("no minimum found"))))
@@ -664,94 +660,146 @@ public class Field implements Serializable {
             .orElseThrow(() -> new IllegalStateException("no subject found"));
     }
 
-    public boolean hasNotProceededSubjects() {
+    private Stream<Card> getCardStream(CardType cardType) {
+        return cards.stream().filter(card -> card.getCardType().equals(cardType));
+    }
+
+    private Stream<Card> getSubjectStream() {
+        return getCardStream(CardType.SUBJECT);
+    }
+
+    private Stream<Card> getTaskStream() {
+        return getCardStream(CardType.TASK);
+    }
+
+    private Stream<Card> getTransferStream() {
+        return getCardStream(CardType.TRANSFER);
+    }
+
+    /**
+     * check for not proceeded subjects
+     * @return
+     */
+    private boolean hasNotProceededSubjects() {
         long count = cards.stream()
-            .filter(card -> card.getCardType().equals(CardType.SUBJECT))
+            .filter(card -> checkCardType(card, CardType.SUBJECT))
             .filter(card -> card.getTasks().size() == 0)
             .count();
 
         return count > 0;
     }
 
-    public boolean hasNotProceededTasks() {
+    /**
+     * check for not proceeded tasks
+     * @return
+     */
+    private boolean hasNotProceededTasks() {
         long count = cards.stream()
-            .filter(card -> card.getCardType().equals(CardType.TASK))
+            .filter(card -> checkCardType(card, CardType.TASK))
             .filter(card -> Objects.isNull(card.getSubject()))
             .count();
 
         return count > 0;
     }
 
-    private boolean checkForStarLayout() {
-        Set<Card> subjects = new HashSet<>(
-            this.cards.stream()
-                .filter(card -> card.getCardType().equals(CardType.SUBJECT)).collect(Collectors.toSet())
-        );
-        Set<Card> tasks = new HashSet<>(
-            this.cards.stream()
-                .filter(card -> card.getCardType().equals(CardType.TASK)).collect(Collectors.toSet())
-        );
+    /**
+     * returns a copy of all subjects
+     * @return
+     */
+    private Set<Card> getCopyOfSubjects() {
+        return this.cards.stream()
+            .filter(card -> checkCardType(card, CardType.SUBJECT))
+            .distinct()
+            .collect(Collectors.toSet());
+    }
 
-        Set<Pair<Card, Set<Card>>> summary = subjects.stream()
-            .map(subject -> {
-                return new Pair<>(subject, tasks.stream()
-                    .map(task -> {
-                        return new Pair<>(task, subjects.stream()
-                            .map(subject1 -> new Pair<>(subject1, Card.getDistance(task, subject1)))
-                            .min(Comparator.comparingDouble(Pair::getValue))
-                            .map(Pair::getKey)
-                            .orElseThrow(() -> new IllegalStateException("blabla")));
-                    }).filter(taskSubjectPair -> taskSubjectPair.getValue().equals(subject))
-                    .map(Pair::getKey)
-                    .collect(Collectors.toSet()));
-            }).collect(Collectors.toSet());
+    /**
+     * returns a copy of all tasks
+     * @return
+     */
+    private Set<Card> getCopyOfTasks() {
+        return this.cards.stream()
+            .filter(card -> checkCardType(card, CardType.TASK))
+            .distinct()
+            .collect(Collectors.toSet());
+    }
 
-        List<Card> ret = summary.stream()
-            .map(subjectSetPair -> {
-                Card key = subjectSetPair.getKey();
-                subjectSetPair.getValue().stream()
-                    .sorted(Comparator.comparingDouble(value -> Card.getDistance(key,value)))
-                    .forEach(task -> {
-                        key.getTasks().add(task);
-                        task.setSubject(key);
-                    });
-                return key;
-            }).collect(Collectors.toList());
+    /**
+     * check if the layout is a star layout or not
+     * @return
+     */
+    private boolean calculateStarLayout() {
+        Set<Card> subjects = getCopyOfSubjects();
+        Set<Card> tasks = getCopyOfTasks();
 
+        Set<Pair<Card, Set<Card>>> starLayout = getStarLayout(subjects, tasks);
 
-        OptionalDouble average = summary.stream()
+        Double average = calculateAllVariationCoefficients(starLayout);
+
+        // Entscheidung Sternmuster oder normales Legemuster
+        return average < THRESHOLD_FOR_STARLAYOUT;
+
+    }
+
+    /**
+     * calculate all variation coefficients for a given star layout
+     * @param starLayout
+     * @return
+     */
+    private double calculateAllVariationCoefficients(Set<Pair<Card, Set<Card>>> starLayout) {
+        return starLayout.stream()
             .filter(subjectSetPair -> subjectSetPair.getValue().size() > 1)
             .map(subjectSetPair -> {
                 double[] doubles = subjectSetPair.getValue().stream()
                     .mapToDouble(value -> Card.getDistance(subjectSetPair.getKey(), value)).toArray();
                 Statistics statistics = new Statistics(doubles);
-                return statistics.bbb();
+                return statistics.variationCoefficient();
             }).mapToDouble(value -> value)
-            .average();
-        System.out.println("Variationskoeffizient: " + average);
-
-        if (average.isPresent()) {
-            if (average.getAsDouble() < 0.3) {
-                System.out.println("Sternmuster entdeckt!!!");
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+            .average()
+            // Sonderfall wenn es Anzahl Tasks <= Anzahl Subjekte
+            .orElse(0.0);
     }
 
-    private void preCalculateValues() {
-        this.preCalculatedValues = cards.stream()
-            .filter(card -> card.getCardType().equals(CardType.SUBJECT))
+    /**
+     * calculate the Star Layout for a given set of subjects and tasks
+     * @param subjects
+     * @param tasks
+     * @return
+     */
+    private Set<Pair<Card, Set<Card>>> getStarLayout(Set<Card> subjects, Set<Card> tasks) {
+        return subjects.stream()
+                .map(subject -> {
+                    return new Pair<>(subject, tasks.stream()
+                        .map(task -> {
+                            return new Pair<>(task, subjects.stream()
+                                .map(subject1 -> new Pair<>(subject1, Card.getDistance(task, subject1)))
+                                .min(Comparator.comparingDouble(Pair::getValue))
+                                .map(Pair::getKey)
+                                .orElseThrow(() -> new IllegalStateException("blabla")));
+                        }).filter(taskSubjectPair -> taskSubjectPair.getValue().equals(subject))
+                        .map(Pair::getKey)
+                        .collect(Collectors.toSet()));
+                }).collect(Collectors.toSet());
+    }
+
+    /**
+     * returns all relevant informations for all possible Subject --> Task --> Follower combinations
+     * @return pre-calculation for all possible Subject --> Task --> Follower combinations
+     */
+    private Set<Pair<Card, Set<Pair<Card, Set<Pair<Card, Calculation>>>>>> preCalculateValues() {
+        return cards.stream()
+            .filter(card -> checkCardType(card, CardType.SUBJECT))
             .map(subject -> new Pair<>(subject, cards.stream()
-                .filter(card -> card.getCardType().equals(CardType.TASK))
+                .filter(card -> checkCardType(card, CardType.TASK))
                 .map(sourceTask -> new Pair<>(sourceTask, cards.stream()
-                    .filter(card -> card.getCardType().equals(CardType.TASK))
+                    .filter(card -> checkCardType(card, CardType.TASK))
                     .map(targetTask -> new Pair<>(targetTask, new Calculation(subject, sourceTask, targetTask)))
                     .collect(Collectors.toSet()))
                 ).collect(Collectors.toSet())))
             .collect(Collectors.toSet());
+    }
+
+    private static boolean checkCardType(Card card, CardType cardType) {
+        return card.getCardType().equals(cardType);
     }
 }
