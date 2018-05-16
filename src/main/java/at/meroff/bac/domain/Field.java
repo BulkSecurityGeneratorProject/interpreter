@@ -15,6 +15,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
 
+import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -324,16 +325,16 @@ public class Field implements Serializable {
             // Reset task assignment --> calculate default layout
             getCards().forEach(card -> card.setSubject(null));
             getCards().forEach(card -> card.getTasks().clear());
-        }
 
-        initialDefaultLayoutCalculation();
+            initialDefaultLayoutCalculation();
 
-        reassignTasksIfEmptySubjectExists();
+            reassignTasksIfEmptySubjectExists();
 
-        // TODO was ist mit nicht zugeordneten Tasks
+            // TODO was ist mit nicht zugeordneten Tasks
 
-        for (int i = 0; i < 100; i++) {
-            checkInReverseOrder();
+            for (int i = 0; i < 100; i++) {
+                checkInReverseOrder();
+            }
         }
 
         // create image
@@ -347,13 +348,12 @@ public class Field implements Serializable {
             Pair<Card, Card> firstSubjectTaskRelation = findFirstSubjectTaskRelation();
 
             while (firstSubjectTaskRelation != null) {
-                // find follow-up tasks
+                // find all possible follow-up tasks
                 Set<Pair<Card, Calculation>> followUpTasks = findFollowUpTask(firstSubjectTaskRelation);
+
+                // filter tasks with no associated subject
                 followUpTasks = followUpTasks.stream()
-                    //.filter(taskCalculationPair -> savedTasks.get(savedTasks.indexOf(taskCalculationPair.getKey())).getSubject() == null)
-                    .filter(taskCalculationPair -> getTaskStream().filter(card -> Objects.isNull(card.getSubject())).count()>0)
                     .filter(taskCalculationPair -> Objects.isNull(taskCalculationPair.getKey().getSubject()))
-                    //.filter(taskCalculationPair -> taskCalculationPair.getKey().proceeded == false)
                     .collect(Collectors.toSet());
 
                 // filter follow-ups
@@ -470,7 +470,7 @@ public class Field implements Serializable {
             .forEach(card -> {
                 // <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
                 for (Card card1 : card.getTasks()) {
-                    if (card.getTasks().indexOf(card1) == 0) {
+                    if (layoutType.equals(LayoutType.STAR)) {
                         Element line = doc.createElementNS(svgNS, "line");
                         line.setAttributeNS(null, "x1", Integer.toString((int) card.getCenter().getX()));
                         line.setAttributeNS(null, "x2", Integer.toString((int) card1.getCenter().getX()));
@@ -478,15 +478,26 @@ public class Field implements Serializable {
                         line.setAttributeNS(null, "y2", Integer.toString((int) card1.getCenter().getY()));
                         line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
                         svgRoot.appendChild(line);
+
                     } else {
-                        Card cardPrev = card.getTasks().get(card.getTasks().indexOf(card1) - 1);
-                        Element line = doc.createElementNS(svgNS, "line");
-                        line.setAttributeNS(null, "x1", Integer.toString((int) card1.getCenter().getX()));
-                        line.setAttributeNS(null, "x2", Integer.toString((int) cardPrev.getCenter().getX()));
-                        line.setAttributeNS(null, "y1", Integer.toString((int) card1.getCenter().getY()));
-                        line.setAttributeNS(null, "y2", Integer.toString((int) cardPrev.getCenter().getY()));
-                        line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
-                        svgRoot.appendChild(line);
+                        if (card.getTasks().indexOf(card1) == 0) {
+                            Element line = doc.createElementNS(svgNS, "line");
+                            line.setAttributeNS(null, "x1", Integer.toString((int) card.getCenter().getX()));
+                            line.setAttributeNS(null, "x2", Integer.toString((int) card1.getCenter().getX()));
+                            line.setAttributeNS(null, "y1", Integer.toString((int) card.getCenter().getY()));
+                            line.setAttributeNS(null, "y2", Integer.toString((int) card1.getCenter().getY()));
+                            line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
+                            svgRoot.appendChild(line);
+                        } else {
+                            Card cardPrev = card.getTasks().get(card.getTasks().indexOf(card1) - 1);
+                            Element line = doc.createElementNS(svgNS, "line");
+                            line.setAttributeNS(null, "x1", Integer.toString((int) card1.getCenter().getX()));
+                            line.setAttributeNS(null, "x2", Integer.toString((int) cardPrev.getCenter().getX()));
+                            line.setAttributeNS(null, "y1", Integer.toString((int) card1.getCenter().getY()));
+                            line.setAttributeNS(null, "y2", Integer.toString((int) cardPrev.getCenter().getY()));
+                            line.setAttributeNS(null, "style", "stroke:rgb(0,200,0);stroke-width:5");
+                            svgRoot.appendChild(line);
+                        }
                     }
                 }
 
@@ -570,8 +581,7 @@ public class Field implements Serializable {
                     })
                     .filter(taskCalculationPair -> taskCalculationPair.getValue().similarityFromSource > 0.5)
                     .filter(taskCalculationPair -> !checkForIntersectionWithSubject(subject, taskCalculationPair.getKey()))
-                    .sorted(Comparator.comparingDouble(o -> o.getValue().distanceSubjectTarget))
-                    .findFirst();
+                    .min(Comparator.comparingDouble(o -> o.getValue().distanceSubjectTarget));
 
                 if (followUp.isPresent()) {
                     // Task which should be checked
@@ -736,6 +746,19 @@ public class Field implements Serializable {
 
         Double average = calculateAllVariationCoefficients(starLayout);
 
+        // die Subject <-> Task Relationen festschreiben wenn es sich um ein Sternlayout handelt
+        if (average < THRESHOLD_FOR_STARLAYOUT) {
+            starLayout.stream()
+                .forEach(cardSetPair -> {
+                    Card subject = cardSetPair.getKey();
+                    cardSetPair.getValue().stream()
+                        .forEach(task -> {
+                            subject.addTasks(task);
+                            task.setSubject(subject);
+                        });
+                });
+        }
+
         // Entscheidung Sternmuster oder normales Legemuster
         return average < THRESHOLD_FOR_STARLAYOUT;
 
@@ -766,20 +789,49 @@ public class Field implements Serializable {
      * @param tasks
      * @return
      */
-    private Set<Pair<Card, Set<Card>>> getStarLayout(Set<Card> subjects, Set<Card> tasks) {
+    private static Set<Pair<Card, Set<Card>>> getStarLayout(Set<Card> subjects, Set<Card> tasks) {
+        // calculate the nearest subject for every task
+        Set<Pair<Card, Card>> nearestTaskSubjectCombinations = getNearestTaskSubjectCombinations(tasks, subjects);
+
+        // assign tasks to their nearest subject
         return subjects.stream()
-                .map(subject -> {
-                    return new Pair<>(subject, tasks.stream()
-                        .map(task -> {
-                            return new Pair<>(task, subjects.stream()
-                                .map(subject1 -> new Pair<>(subject1, Card.getDistance(task, subject1)))
-                                .min(Comparator.comparingDouble(Pair::getValue))
-                                .map(Pair::getKey)
-                                .orElseThrow(() -> new IllegalStateException("blabla")));
-                        }).filter(taskSubjectPair -> taskSubjectPair.getValue().equals(subject))
-                        .map(Pair::getKey)
-                        .collect(Collectors.toSet()));
-                }).collect(Collectors.toSet());
+            .map(subject -> getNearestTasksForSubject(nearestTaskSubjectCombinations, subject))
+            .collect(Collectors.toSet());
+    }
+
+    /**
+     *
+     * @param tasks
+     * @param subjects
+     * @return
+     */
+    private static Set<Pair<Card, Card>> getNearestTaskSubjectCombinations(Set<Card> tasks, Set<Card> subjects) {
+        return tasks.stream()
+            .map(task -> new Pair<>(task, getNearestSubject(subjects, task)))
+            .collect(Collectors.toSet());
+    }
+
+    private static Card getNearestSubject(Set<Card> subjects, Card task) {
+        return subjects.stream()
+            .map(subject1 -> new Pair<>(subject1, Card.getDistance(task, subject1)))
+            .min(Comparator.comparingDouble(Pair::getValue))
+            .map(Pair::getKey)
+            .orElseThrow(() -> new IllegalStateException("Something went wrong"));
+    }
+
+    /**
+     *
+     * @param nearestTaskSubjectCombinations
+     * @param subject
+     * @return
+     */
+    private static Pair<Card, Set<Card>> getNearestTasksForSubject(Set<Pair<Card, Card>> nearestTaskSubjectCombinations, Card subject) {
+        // filter tasks by the given subject
+        Set<Card> nearestTasksForSubject = nearestTaskSubjectCombinations.stream()
+            .filter(taskSubjectPair -> taskSubjectPair.getValue().equals(subject))
+            .map(Pair::getKey)
+            .collect(Collectors.toSet());
+        return new Pair<>(subject, nearestTasksForSubject);
     }
 
     /**
